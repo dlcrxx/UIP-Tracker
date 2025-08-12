@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event</title>
+  <link rel="stylesheet" href="event.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+<body>
+<body>
+    <!-- Mobile menu toggle button for responsive navigation -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main sidebar navigation with logo and menu links -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="tracker logo.png" alt="logo" />
+        <span class="logo-text">UIP <br>Tracker</span>
+      </div>
+
+      <ul class="sidebar-links">
+        <li><a href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard<span class="chevron">&gt;</span></a></li>
+        <li><a href="#"><span class="material-symbols-outlined">groups</span>Attendance<span class="chevron">&gt;</span></a></li>
+        <li><a href="#"><span class="material-symbols-outlined">account_circle</span>Online Users<span class="chevron">&gt;</span></a></li>
+        <li><a href="event.html"><span class="material-symbols-outlined">notifications_active</span>Event<span class="chevron">&gt;</span></a></li>
+        <li><a href="#"><span class="material-symbols-outlined">flag</span>Help<span class="chevron">&gt;</span></a></li>
+        <li><a href="#"><span class="material-symbols-outlined">groups</span>Developers<span class="chevron">&gt;</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+        <!-- Header with page title and user profile dropdown -->
+        <div class="header">
+        <span><i class="fas fa-calendar-alt"></i> Event</span>
+        <button class="user-profile" onclick="toggleDropdown()">
+          <div class="user-avatar">DC</div>
+          <div class="user-details">
+            <h3>Dani Dela Cruz</h3>
+            <p>Intern</p>
+          </div>
+          <span class="material-symbols-outlined" style="color: #9197B3;">expand_more</span>
+         
+          <!-- User dropdown menu with profile options -->
+          <div class="dropdown-menu" id="userDropdown">
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">person</span>
+              Profile
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">settings</span>
+              Change Password
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">logout</span>
+              Sign out
+            </a>
+          </div>
+        </button>
+      </div>
+   
+    <!-- Calendar and event display wrapper -->
+    <div class="calendar-wrapper">
+        <section class="calendar">
+          <br>
+          <hr>
+          <!-- Calendar navigation header with month/year controls -->
+          <div class="calendar-header">
+            <button id="prevMonth" class="arrow-btn"><i class="fas fa-chevron-left"></i></button>
+           
+            <div class="calendar-title">
+              <!-- Month selection dropdown -->
+              <div class="dropdown-picker">
+                <button id="month-button" class="picker-btn">
+                  <span id="month-label">Month</span>          <i class="fa-solid fa-caret-down"></i></button>
+                <div id="month-dropdown" class="picker hidden">
+                  <div class="picker-grid"></div>
+                </div>
+              </div>
+
+              <!-- Year selection dropdown -->
+              <div class="dropdown-picker">
+                <button id="year-button" class="picker-btn">
+                  <span id="year-label">Year</span>           <i class="fa-solid fa-caret-down"></i></button>
+                <div id="year-dropdown" class="picker hidden">
+                  <div class="picker-grid"></div>
+                </div>
+              </div>
+            </div>
+
+            <button id="nextMonth" class="arrow-btn"><i class="fas fa-chevron-right"></i></button>
+          </div>
+
+          <!-- Calendar grid with weekdays and dates -->
+          <div class="calendar-grid">
+            <div id="calendar-weekdays" class="calendar-weekdays"></div>
+            <div id="calendar-days" class="calendar-days"></div>
+          </div>
+        </section>
+
+        <!-- Event display area for selected dates -->
+        <div id="event-display" class="event-display">
+          <h3>No Upcoming Activities</h3>
+          <p>No activities have been scheduled yet.</p>
+        </div>
+      </div>
+    </main>
+
+<script>
+      /**
+       * Mobile sidebar toggle functionality
+       * Function to toggle mobile sidebar visibility
+       */
+      function toggleMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+      }
+
+      /**
+       * Close mobile sidebar when clicking outside
+       * Event listener to close mobile sidebar when clicking outside
+       */
+      document.addEventListener('click', function(event) {
+        const sidebar = document.getElementById('sidebar');
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        
+        if (window.innerWidth <= 768 && 
+            !sidebar.contains(event.target) && 
+            !mobileToggle.contains(event.target)) {
+          sidebar.classList.remove('active');
+        }
+      });
+
+      /**
+       * Profile menu toggle functionality (legacy code)
+       * Legacy profile menu functionality - kept for compatibility
+       */
+      document.addEventListener("DOMContentLoaded", function () {
+  const profileBtn = document.getElementById("profileBtn");
+  const profileMenu = document.getElementById("profileMenu");
+
+  if (profileBtn && profileMenu) {
+    profileBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isExpanded = profileBtn.getAttribute("aria-expanded") === "true";
+      if (isExpanded) {
+        profileMenu.classList.remove("show");
+        profileBtn.setAttribute("aria-expanded", "false");
+      } else {
+        profileMenu.classList.add("show");
+        profileBtn.setAttribute("aria-expanded", "true");
+      }
+    });
+
+    document.addEventListener("click", () => {
+      profileMenu.classList.remove("show");
+      profileBtn.setAttribute("aria-expanded", "false");
+    });
+  }
+});
+
+      /**
+       * User dropdown toggle functionality
+       * Function to toggle user dropdown menu visibility
+       */
+      function toggleDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('show');
+      }
+
+      /**
+       * Close dropdown when clicking outside
+       * Event listener to close dropdown when clicking outside
+       */
+      document.addEventListener('click', function(event) {
+        const userProfile = document.querySelector('.user-profile');
+        const dropdown = document.getElementById('userDropdown');
+       
+        if (!userProfile.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+
+      /**
+       * Sidebar navigation active state functionality
+       * Add active state functionality to sidebar navigation links
+       */
+      document.querySelectorAll('.sidebar-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+         
+          document.querySelectorAll('.sidebar-links a').forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+    });
+
+    /**
+     * Main calendar functionality and event handling
+     * Modified: Changed from static events array to dynamic localStorage-based system
+     * that syncs with admin panel changes
+     */
+    document.addEventListener("DOMContentLoaded", function () {
+  const calendarDays = document.getElementById("calendar-days");
+  const eventDisplay = document.getElementById("event-display");
+  const calendarWeekdays = document.getElementById("calendar-weekdays");
+  const monthButton = document.getElementById("month-button");
+  const yearButton = document.getElementById("year-button");
+
+  /**
+   * Generate weekday headers for calendar
+   * Creates the weekday header row for the calendar display
+   */
+  const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  weekdayNames.forEach(day => {
+    const dayDiv = document.createElement("div");
+    dayDiv.classList.add("weekday");
+    dayDiv.textContent = day;
+    calendarWeekdays.appendChild(dayDiv);
+  });
+
+  /**
+   * Month names array for calendar navigation
+   * Static array of month names for display purposes
+   */
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  /**
+   * Dynamic event data management
+   * Modified: Changed from static events array to dynamic system that loads from localStorage
+   * This connects to the admin panel for real-time event management
+   */
+  let events = [];
+
+  /**
+   * Load events from localStorage
+   * Modified: Added function to load events from admin panel storage
+   */
+  function loadEvents() {
+    const savedEvents = localStorage.getItem('calendarEvents');
+    if (savedEvents) {
+      events = JSON.parse(savedEvents);
+    } else {
+      // Fallback to original static events if no admin events exist
+      events = [
+        { id: '1', date: "2025-08-08", title: "Barangay Cleanup", description: "A community cleanup.", image: "SUBO.jpg" },
+        { id: '2', date: "2025-08-10", title: "Barangay Cleanup", description: "A community cleanup.", image: "SUBO.jpg" },
+        { id: '3', date: "2025-08-15", title: "Medical Mission", description: "Free checkups for residents.", image: "medical.jpg" }
+      ];
+    }
+  }
+
+  /**
+   * Listen for admin panel updates
+   * Modified: Added event listener to refresh calendar when admin makes changes
+   */
+  window.addEventListener('eventsUpdated', function(e) {
+    events = e.detail;
+    renderCalendar(); // Re-render calendar with updated events
+  });
+
+  // Initialize events on page load
+  loadEvents();
+
+  /**
+   * Current selected month and year state
+   * State management for calendar navigation
+   */
+  let selectedMonth = new Date().getMonth();
+  let selectedYear = new Date().getFullYear();
+
+  /**
+   * Function to render the calendar grid with dates and events
+   * Modified: Updated to work with dynamic events from admin panel
+   */
+  function renderCalendar() {
+    calendarDays.innerHTML = "";
+    const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
+    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+
+    /**
+     * Add empty cells for days before month starts
+     * Creates empty calendar cells for proper alignment
+     */
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement("div");
+      empty.classList.add("day");
+      calendarDays.appendChild(empty);
+    }
+
+    /**
+     * Generate calendar days with event handling
+     * Modified: Updated event detection to work with dynamic events
+     */
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateKey = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+      const dayDiv = document.createElement("div");
+      dayDiv.textContent = d;
+      dayDiv.classList.add("day");
+
+      /**
+       * Highlight current date
+       * Adds visual indicator for today's date
+       */
+      if (d === new Date().getDate() && selectedMonth === new Date().getMonth() && selectedYear === new Date().getFullYear()) {
+        dayDiv.classList.add("today");
+      }
+
+      /**
+       * Check for events on this date and add click handlers
+       * Modified: Updated to work with dynamic events array
+       */
+      const eventsForDate = events.filter(e => e.date === dateKey);
+      if (eventsForDate.length > 0) {
+        dayDiv.classList.add("has-event");
+        dayDiv.addEventListener("click", () => {
+          eventDisplay.innerHTML = `
+            <div class="event-section">
+              <h2 class="event-title"><i class="fas fa-calendar-alt"></i> Events for ${months[selectedMonth]} ${d}, ${selectedYear}</h2>
+              <div class="event-grid">
+                ${eventsForDate.map(event => `
+                  <div class="event-item">
+                    <h3>${event.title}</h3>
+                    <img src="${event.image}" alt="${event.title}" class="event-image" onerror="this.style.display='none'">
+                    <p>${event.description}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+          document.querySelectorAll(".day").forEach(el => el.classList.remove("selected"));
+          dayDiv.classList.add("selected");
+        });
+      } else {
+        /**
+         * Handle clicks on dates without events
+         * Shows default message for dates with no events
+         */
+        dayDiv.addEventListener("click", () => {
+          eventDisplay.innerHTML = `<h3>No Upcoming Activities</h3><p>No activities have been scheduled yet.</p>`;
+          document.querySelectorAll(".day").forEach(el => el.classList.remove("selected"));
+          dayDiv.classList.add("selected");
+        });
+      }
+      calendarDays.appendChild(dayDiv);
+    }
+
+    /**
+     * Update month and year labels
+     * Updates the display labels for current month and year
+     */
+    document.getElementById("month-label").textContent = months[selectedMonth];
+    document.getElementById("year-label").textContent = selectedYear;
+  }
+
+  const monthDropdown = document.getElementById("month-dropdown");
+  const yearDropdown = document.getElementById("year-dropdown");
+
+  /**
+   * Populate month dropdown options
+   * Creates clickable month selection dropdown
+   */
+  months.forEach((m, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = m;
+    btn.addEventListener("click", () => {
+      selectedMonth = i;
+      document.getElementById("month-label").textContent = m;
+      monthDropdown.classList.add("hidden");
+      renderCalendar();
+    });
+    monthDropdown.querySelector(".picker-grid").appendChild(btn);
+  });
+
+  /**
+   * Populate year dropdown options (current year ±5)
+   * Creates year selection dropdown with range of years
+   */
+  const currentYear = new Date().getFullYear();
+  for (let y = currentYear - 5; y <= currentYear + 5; y++) {
+    const btn = document.createElement("button");
+    btn.textContent = y;
+    btn.addEventListener("click", () => {
+      selectedYear = y;
+      document.getElementById("year-label").textContent = y;
+      yearDropdown.classList.add("hidden");
+      renderCalendar();
+    });
+    yearDropdown.querySelector(".picker-grid").appendChild(btn);
+  }
+
+  /**
+   * Event handlers for dropdown toggle buttons
+   * Manages month and year dropdown visibility
+   */
+  monthButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    monthDropdown.classList.toggle("hidden");
+    yearDropdown.classList.add("hidden");
+  });
+
+  yearButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    yearDropdown.classList.toggle("hidden");
+    monthDropdown.classList.add("hidden");
+  });
+
+  /**
+   * Close dropdowns when clicking outside
+   * Event listeners to hide dropdowns when clicking elsewhere
+   */
+  document.addEventListener("click", (e) => {
+    if (!monthDropdown.contains(e.target) && !monthButton.contains(e.target)) {
+      monthDropdown.classList.add("hidden");
+    }
+    if (!yearDropdown.contains(e.target) && !yearButton.contains(e.target)) {
+      yearDropdown.classList.add("hidden");
+    }
+  });
+
+  /**
+   * Previous month navigation button
+   * Handles navigation to previous month with year rollover
+   */
+  document.getElementById("prevMonth").addEventListener("click", () => {
+    if (selectedMonth === 0) { selectedMonth = 11; selectedYear--; }
+    else { selectedMonth--; }
+    renderCalendar();
+  });
+
+  /**
+   * Next month navigation button
+   * Handles navigation to next month with year rollover
+   */
+  document.getElementById("nextMonth").addEventListener("click", () => {
+    if (selectedMonth === 11) { selectedMonth = 0; selectedYear++; }
+    else { selectedMonth++; }
+    renderCalendar();
+  });
+
+  /**
+   * Auto-refresh events periodically
+   * Modified: Added periodic check for admin panel updates
+   */
+  setInterval(() => {
+    const currentEvents = localStorage.getItem('calendarEvents');
+    if (currentEvents) {
+      const parsedEvents = JSON.parse(currentEvents);
+      // Check if events have changed
+      if (JSON.stringify(parsedEvents) !== JSON.stringify(events)) {
+        events = parsedEvents;
+        renderCalendar();
+      }
+    }
+  }, 1000); // Check every second for updates
+
+  /**
+   * Initialize calendar on page load
+   * Renders the initial calendar display
+   */
+  renderCalendar();
+});
+
+/**
+ * Storage event listener for cross-tab synchronization
+ * Modified: Added to sync events across multiple browser tabs
+ */
+window.addEventListener('storage', function(e) {
+  if (e.key === 'calendarEvents') {
+    // Reload events when localStorage changes (from admin panel)
+    location.reload();
+  }
+});
+       
+</script>
+</body>
+</html>
