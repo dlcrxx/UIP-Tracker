@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+    <link rel="stylesheet" href="signin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+     <div class="brand">
+            <img src="UIP logo.png" alt="Logo" class="brand-logo">
+            <div class="brand-name">UIP Tracker</div>
+    </div>
+
+<div class="container" id="container">
+    <!-- Sign In Form -->
+    <div class="form-section">
+        <h2 class="form-title">Welcome Intern!</h2>
+        <div class="welcome-text">
+            If this is your first time, kindly create an account to access the<br> attendance tracker.
+        </div>
+        <button class="sign-up-btn">Sign Up</button><br>
+        <p class="status-text">Already registered? Click here to view your current status.</p>
+        <button class="check-status-btn">Check Status</button>    
+        <img src="discord-icon.png" alt="Discord" class="discord-icon" />
+    </div>
+
+    <div class="form-box">
+            <h2>Sign In</h2>
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email">
+           <label>Password</label>
+                <input type="password" id="password" placeholder="Enter your password" />
+                <span id="togglePassword" class="fa-solid fa-eye"></span>
+        <div class="form-options">
+            <label class="remember-me">
+                <input type="checkbox" /> Remember me
+            </label>
+            <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+            <button id="signInBtn">Sign In</button>
+    </div>
+</div>
+    <!-- Status Check Popup -->
+    <div class="status-popup" id="statusPopup">
+    <div class="popup-content">
+        <span class="close-btn" id="closePopup">&times;</span>
+        <h2>Check Your Account Status</h2>
+        <label for="statusEmail">Enter your email</label>
+        <input type="email" id="statusEmail" placeholder="Enter your email" required />
+        <button id="submitStatus">Submit</button>
+    </div>
+    </div>
+</div>
+    <script src="signin.js"></script>
+
+</body>
+</html>

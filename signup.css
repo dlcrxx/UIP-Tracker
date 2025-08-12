@@ -1,0 +1,278 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Poppins, sans-serif;
+}
+
+body {
+    background-image: url('signup-bg.png');
+    background-size: cover;       
+    background-position: center;  
+    background-repeat: no-repeat; 
+    overflow: hidden;
+}
+
+.brand {
+    position: absolute;
+    top: 15px; 
+    left: 40px; 
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    z-index: 2;
+}
+
+.brand-logo {
+    width: 75px; 
+    height: 75px; 
+    margin-right: 10px; 
+}
+
+.brand-name {
+    color: #014080;
+    font-size: 20px; 
+    font-weight: 500;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    padding: 50px 100px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 60px;
+    margin-top: 100px;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0);
+}
+
+.form-title {
+    position: absolute;
+    width: 100%;
+    color: white;
+    font-size: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 850;
+    top: 200px; 
+    left: -55px;
+    text-align: right;
+}
+
+.welcome-text {
+    position: absolute;
+    width: 100%;
+    color: white;
+    top: 250px;   
+    right: 160px; 
+    font-size: 16px;
+    font-weight: 100;
+    text-align: right;
+}
+
+.sign-in-btn {
+    background-color: #4E7FB1; 
+    color: #ffffff;                
+    border: 2px solid #ffffff;   
+    padding: 5px 20px;           
+    border-radius: 15px;            
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+    position: relative;
+    top: 90px; 
+    margin-left: 889px; 
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap; 
+}
+
+.sign-in-btn:hover {
+    background-color: #1c73ca;
+    color: #ffffff;
+    border: 2px solid #b3b8ca;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-box {
+    background: rgba(78, 127, 176, 0.6); 
+    box-shadow: 5px 6px 4px rgba(2, 29, 68, 0.25);
+    padding: 24px; 
+    border-radius: 15px;
+    color: white;
+    min-width: 375px;
+    position: absolute;
+    right: 829px;  
+    top: 50%;
+    transform: translateY(-50%);
+}
+.form-box input {
+    width: 1500%;
+    padding: 8px; 
+    font-size: 14px; 
+}
+
+.form-box button {
+    padding: 10px; 
+    font-size: 14px;
+}
+
+.form-box h2 {
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 750;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-box label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.form-box input {
+    width: 100%;
+    padding: 8px;
+    font-size: 13px;
+    margin-top: 4px;
+    border-radius: 8px;
+    border: 1px #014080 solid;
+    outline: none;
+}
+
+.form-box button {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    background: #001f3f;
+    color: white;
+    border: none;
+    border-radius: 500px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+input::placeholder {
+    color: #808080; 
+}
+.form-box p {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.form-box select {
+    width: 100%;
+    padding: 8px;
+    font-size: 13px;
+    margin-top: 4px;
+    border-radius: 8px;
+    border: 1px #014080 solid;
+    outline: none;
+    background-color: white;
+}
+
+
+.input-group {
+    position: relative;
+    margin-bottom: 5px;
+}
+/* for icon */
+.input-group i {
+    position: absolute;
+    left: 10px;
+    top: 70%;
+    transform: translateY(-50%);
+    color: #808080;
+    font-size: 16px;
+}
+    
+.input-group input {
+    width: 100%;
+    height: 35px;
+    padding-left: 35px;
+    font-family: Poppins, sans-serif;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid #014080;
+    outline: none;
+    box-sizing: border-box;
+    color: #000;
+    background-color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.step-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 12px;
+
+}
+
+.step {
+    height: 13px;
+    width: 13px;
+     margin: -4px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.step.active {
+    background-color: #014080;
+}
+
+#nextBtn {
+  background-color:#014080; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#nextBtn:hover {
+    background-color: #2163a8;
+    color: #ffffff;
+    border: 2px solid #b3b8ca;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+.discord-icon {
+    position: fixed;
+    bottom: 20px;   
+    right: 28px;    
+    width: 50px;  
+    height: 50px;
+    cursor: pointer; 
+    z-index: 9999;  
+}
+
+.discord-icon:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+    transition: 0.3s ease;
+}

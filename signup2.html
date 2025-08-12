@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signup2.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+    <!-- Brand Section -->
+    <div class="brand">
+        <img src="UIP logo.png" alt="Logo" class="brand-logo" />
+        <div class="brand-name">UIP Tracker</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" id="container">
+        <!-- Right Side: Sign In Section -->
+        <div class="form-section">
+            <h2 class="form-title">Already have an account?</h2>
+            <div class="welcome-text">Sign in here to continue</div>
+            <button class="sign-in-btn">Sign In</button><br />
+            <img src="discord-light.png" alt="Discord" class="discord-icon" />
+        </div>
+
+        <!-- Left Side: Sign Up Form Section -->
+        <div class="form-box">
+            <h2>Sign Up</h2>
+            <div class="multi-step-form">
+                <form id="applicationForm">
+                    <!-- Step 3: Address Information -->
+                    <div class="form-step">
+                        <!-- Province Selection -->
+                        <div class="input-group">
+                            <label>Province</label>
+                            <div class="input-with-icon">
+                                <select id="province">
+                                    <option value="">-- Select Province --</option>
+                                </select>
+                                <i class="fas fa-map-marker-alt icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- City/Municipality Selection -->
+                        <div class="input-group">
+                            <label for="city">City/Municipality:</label>
+                            <div class="input-with-icon">
+                                <select id="city" disabled>
+                                    <option value="">-- Select City/Municipality --</option>
+                                </select>
+                                <i class="fas fa-city icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Barangay Selection -->
+                        <div class="input-group">
+                            <label for="barangay">Barangay:</label>
+                            <div class="input-with-icon">
+                                <select id="barangay" disabled>
+                                    <option value="">-- Select Barangay --</option>
+                                </select>
+                                <i class="fas fa-home icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Street Input -->
+                        <div class="input-group">
+                            <label for="street">Street:</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="street" name="street" placeholder="Enter your street" required pattern="[A-Za-z0-9\s.,#-]{3,50}" maxlength="50" />
+                                <i class="fas fa-road icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step Indicators -->
+                    <div class="step-indicators">
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step active"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="form-navigation">
+                        <button id="backBtn" type="button">Back</button>
+                        <button id="nextBtn" type="button">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to JavaScript File -->
+    <script src="signup2.js"></script>
+</body>
+</html>
