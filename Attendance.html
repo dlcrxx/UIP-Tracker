@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UIP Attendance Tracker</title>
+    <link rel="stylesheet" href="Attendance.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="tracker logo.png" alt="logo" />
+        <span class="logo-text">UIP <br>Tracker</span>
+      </div>
+
+      <ul class="sidebar-links">
+        <li><a href="dashboard.html"><span class="material-symbols-outlined">space_dashboard</span>Dashboard<span class="chevron">&gt;</span></a></li>
+        <li><a href="attendance.html" class="active"><span class="material-symbols-outlined">event_available</span>Attendance<span class="chevron">&gt;</span></a></li>
+        <li><a href="onlineusers.html"><span class="material-symbols-outlined">account_circle</span>Online Users<span class="chevron">&gt;</span></a></li>
+        <li><a href="event.html"><span class="material-symbols-outlined">notifications_active</span>Event<span class="chevron">&gt;</span></a></li>
+        <li><a href="help.html"><span class="material-symbols-outlined">help</span>Help<span class="chevron">&gt;</span></a></li>
+        <li><a href="developers.html"><span class="material-symbols-outlined">engineering</span>Developers<span class="chevron">&gt;</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <h1>Hello Danielle,</h1>
+        <button class="user-profile" onclick="toggleDropdown()">
+          <div class="user-avatar">DC</div>
+          <div class="user-details">
+            <h3>Dani Dela Cruz</h3>
+            <p>Intern</p>
+          </div>
+          <span class="material-symbols-outlined" style="color: #9197B3;">expand_more</span>
+          
+          <div class="dropdown-menu" id="userDropdown">
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">person</span>
+              Profile
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">settings</span>
+              Change Password
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">logout</span>
+              Sign out
+            </a>
+          </div>
+        </button>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-wrapper">
+      <div class="stats-cards">
+       <div class="card">Required Hours <h3>300</h3></div>
+       <div class="card">Rendered Hours <h3>0</h3></div>
+       <div class="card">Remaining Hours <h3>300</h3></div>
+       <div class="card">Deducted Hours <h3>0</h3></div>
+       <div class="card">Penalty Hours <h3>0</h3></div>
+      </div>
+    </div>
+
+    <!-- Announcement Banner -->
+       <div class="announcement-banner">
+         📢 Reminder: Submit your daily attendance before 5:00 PM.
+       </div>
+
+    <!-- Time Section -->
+    <div class="time-section">
+     <div class="time-box">
+      <h1 id="time">00:00:00 PM</h1>
+     </div>
+     <div class="date-and-buttons">
+      <p id="date">August 04, 2025 Monday</p>
+      <div class="time-buttons">
+      <button id="btnTimeIn" class="btn-in">Time In</button>
+       <button id="btnTimeOut" class="btn-out">Time Out</button>
+     </div>
+     </div>
+    </div>
+
+    <!-- Attendance Logs -->
+    <section class="table-section">
+      <div class="table-header">
+        <h3>Attendance Logs</h3>
+        <input type="text" placeholder="Search...">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Date</th><th>Time In</th><th>Time Out</th><th>Accumulated Hours</th><th>Hours Rendered</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceBody">
+          <tr>
+            <td>Lastname, Firstname</td><td>MM/DD/YYYY</td><td>HH:MM:SS</td><td>HH:MM:SS</td><td>0 Hours</td><td>0 Hours</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Deduction & Penalty Logs -->
+    <section class="table-section">
+      <div class="table-header">
+        <h3>Deduction & Penalty Logs</h3>
+        <input type="text" placeholder="Search...">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Hours</th><th>Reason</th><th>By</th><th>Type</th><th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="penaltyBody">
+          <tr>
+            <td>Lastname, Firstname</td><td>hrs</td><td>Reason</td><td>By</td><td>Type</td><td>MM/DD/YYYY</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    // ========== ATTENDANCE SYSTEM LOGIC ==========
+
+    // Configuration
+    const ATTENDANCE_CONFIG = {
+        TIME_IN_START: { hour: 7, minute: 45 }, // 7:45 AM
+        TIME_IN_CUTOFF: { hour: 10, minute: 0 }, // 10:00 AM
+        LATE_THRESHOLD: { hour: 8, minute: 0 }, // 8:00 AM
+        WORK_HOURS_REQUIRED: 8,
+        PENALTIES: {
+            LATE_1_15: 0, // Warning only
+            LATE_16_30: 1, // 1 hour deduction
+            LATE_31_PLUS: 4, // Half day (4 hours)
+            ABSENT: 8, // Full day
+            UNDERTIME_PER_HOUR: 1
+        }
+    };
+
+    // Current user session
+    let currentAttendance = {
+        isTimedIn: false,
+        timeInTimestamp: null,
+        date: new Date().toDateString()
+    };
+
+    // ========== INITIALIZE ON PAGE LOAD ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        // Start clock
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        // Initialize attendance system
+        initializeAttendance();
+        
+        // Add event listeners
+        document.getElementById('btnTimeIn').addEventListener('click', timeIn);
+        document.getElementById('btnTimeOut').addEventListener('click', timeOut);
+    });
+
+    // ========== CLOCK FUNCTION ==========
+    function updateTime() {
+        const now = new Date();
+        const time = now.toLocaleTimeString('en-US');
+        const date = now.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric', 
+            weekday: 'long' 
+        });
+        document.getElementById('time').textContent = time;
+        document.getElementById('date').textContent = date;
+    }
+    // Dropdown functionality
+      function toggleDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('show');
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const userProfile = document.querySelector('.user-profile');
+        const dropdown = document.getElementById('userDropdown');
+        
+        if (!userProfile.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+
+</script>
+
+  </body>
+</html>
