@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UIP Attendance Tracker - Admin</title>
+    <link rel="stylesheet" href="admin-dashboard.css" />
+    <!-- Google Material Symbols for icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo.png" alt="logo" />
+         <span class="logo-text">UIP Tracker</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="admin-dashboard.html" class="active"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+        <li><a href="#"><span class="material-symbols-outlined">groups</span>Attendance</a></li>
+        <li><a href="#"><span class="material-symbols-outlined">account_circle</span>Online Users</a></li>
+        <li><a href="#"><span class="material-symbols-outlined">notifications_active</span>Event</a></li>
+        <li><a href="admin-help.html"><span class="material-symbols-outlined">flag</span>Help</a></li>
+        <li><a href="#"><span class="material-symbols-outlined">groups</span>Developers</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <h1>Admin Dashboard</h1>
+        <button class="user-profile" onclick="toggleDropdown()">
+          <div class="user-avatar">AD</div>
+          <div class="user-details">
+            <h3>Administrator User</h3>
+            <p>Administrator</p>
+          </div>
+          <span class="material-symbols-outlined" style="color: #9197B3;">expand_more</span>
+          
+          <div class="dropdown-menu" id="userDropdown">
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">person</span>
+              Profile
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">settings</span>
+              Change Password
+            </a>
+          <div class="dropdown-divider" style="margin: 0 16px;"></div>
+            <a href="signin.html" class="dropdown-item">
+              <span class="material-symbols-outlined">logout</span>
+              Sign out
+            </a>
+          </div>
+        </button>
+      </div>
+
+<!-- Summary Dashboard Stats -->
+<div class="dashboard-stats">
+  <div class="stat-card">
+    <div class="stat-icon blue">
+      <span class="material-symbols-outlined">group</span>
+    </div>
+    <div class="stat-info">
+      <h3 id="totalUsersStat">0</h3>
+      <p>Total Users</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon green">
+      <span class="material-symbols-outlined">school</span>
+    </div>
+    <div class="stat-info">
+      <h3 id="totalInternsStat">0</h3>
+      <p>Total Interns</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon purple">
+      <span class="material-symbols-outlined">corporate_fare</span>
+    </div>
+    <div class="stat-info">
+      <h3 id="totalStaffStat">0</h3>
+      <p>Total Staff</p>
+    </div>
+  </div>
+</div>
+
+      <!-- Admin Announcements Section -->
+      <div class="admin-announcements-section">
+        <h2>Manage Announcements</h2>
+        <form class="announcement-form" id="announcementForm">
+            <input type="hidden" id="announcementId">
+            <input type="text" id="announcementTitle" placeholder="Announcement Title" required>
+            <textarea id="announcementContent" rows="4" placeholder="Announcement Content" required></textarea>
+            <input type="text" id="announcementGreeting" placeholder="Greeting (e.g., GREETINGS INTERNS!)" required>
+            <select id="announcementStatus" required>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Ended">Ended</option>
+            </select>
+            <button type="submit">Add Announcement</button>
+        </form>
+      </div>
+
+      <!-- Announcements List -->
+      <div class="announcements-section">
+        <h2>Current Announcements</h2>
+        <div id="announcementsList">
+          <!-- Announcements will be dynamically loaded here -->
+        </div>
+      </div>
+
+      <!-- Requests Container -->
+      <div class="requests-container">
+        
+        <!-- Off-Boarding Request Section -->
+        <div class="request-card">
+            <h2>Off-Boarding Requests</h2>
+            <div class="approval-list" id="offboardingList">
+                <!-- Pending off-boarding users will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Account Approval Section -->
+        <div class="request-card">
+            <h2>Account Approval Requests</h2>
+            <div class="approval-list" id="approvalList">
+                <!-- Pending user accounts will be loaded here -->
+            </div>
+        </div>
+
+      </div>
+    </main>
+    <script src="admin-dashboard.js"></script>
+  </body>
+</html>

@@ -10,52 +10,110 @@
 </head>
 
 <body>
-     <div class="brand">
-            <img src="UIP logo.png" alt="Logo" class="brand-logo">
-            <div class="brand-name">UIP Tracker</div>
+    <div class="brand">
+        <img src="UIP logo.png" alt="Logo" class="brand-logo">
+        <div class="brand-name">UIP Tracker</div>
     </div>
-
-<div class="container" id="container">
-    <!-- Sign In Form -->
-    <div class="form-section">
-        <h2 class="form-title">Welcome Intern!</h2>
-        <div class="welcome-text">
-            If this is your first time, kindly create an account to access the<br> attendance tracker.
+    <div class="container" id="container">
+        <div class="form-section">
+            <h2 class="form-title">Welcome Intern!</h2>
+            <div class="welcome-text">If this is your first time, kindly create an account to access the<br> attendance tracker.</div>
+            <button class="sign-up-btn">Sign Up</button><br>
+            <p class="status-text">Already registered? Click here to view your current status.</p>
+            <button class="check-status-btn">Check Status</button>    
         </div>
-        <button class="sign-up-btn">Sign Up</button><br>
-        <p class="status-text">Already registered? Click here to view your current status.</p>
-        <button class="check-status-btn">Check Status</button>    
-        <img src="discord-icon.png" alt="Discord" class="discord-icon" />
-    </div>
-
-    <div class="form-box">
+        <div class="form-box">
             <h2>Sign In</h2>
-            <label>Email</label>
-            <input type="email" placeholder="Enter your email">
-           <label>Password</label>
-                <input type="password" id="password" placeholder="Enter your password" />
-                <span id="togglePassword" class="fa-solid fa-eye"></span>
-        <div class="form-options">
-            <label class="remember-me">
-                <input type="checkbox" /> Remember me
-            </label>
-            <a href="#" class="forgot-password">Forgot password?</a>
+            <!-- CRITICAL FIX: The <form> tag with an ID now wraps the inputs and button -->
+            <form id="loginForm">
+                <label for="email">Email</label>
+                <!-- CRITICAL FIX: The email input now has an ID -->
+                <input type="email" id="email" placeholder="Enter your email" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                
+                <div class="form-options">
+                    <label class="remember-me"><input type="checkbox"/> Remember me</label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <!-- This is now a submit button for the form -->
+                <button type="submit">Sign In</button>
+                <p class="error-message" id="errorMessage"></p>
+            </form>
         </div>
-            <button id="signInBtn">Sign In</button>
     </div>
-</div>
-    <!-- Status Check Popup -->
-    <div class="status-popup" id="statusPopup">
-    <div class="popup-content">
-        <span class="close-btn" id="closePopup">&times;</span>
-        <h2>Check Your Account Status</h2>
-        <label for="statusEmail">Enter your email</label>
-        <input type="email" id="statusEmail" placeholder="Enter your email" required />
-        <button id="submitStatus">Submit</button>
-    </div>
-    </div>
-</div>
-    <script src="signin.js"></script>
+    <!-- ... your status check popup ... -->
+    <script>
+        // Use a single, consolidated script block
+        document.addEventListener('DOMContentLoaded', () => {
 
+            // --- Get all the necessary HTML elements ---
+            const loginForm = document.getElementById('loginForm');
+            const signUpBtn = document.querySelector('.sign-up-btn');
+            // ... add other elements here if needed ...
+
+            // --- MAIN LOGIN LOGIC ---
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault(); // Prevent the page from reloading
+
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const errorMessageElem = document.getElementById('errorMessage');
+
+                    // Reset previous error messages
+                    errorMessageElem.textContent = '';
+                    errorMessageElem.style.display = 'none';
+
+                    if (!email || !password) {
+                        alert('Please enter both email and password.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('api_login.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            // SUCCESS!
+                            localStorage.setItem('loggedInUser', JSON.stringify(data.user));
+                            if (data.token) {
+                                localStorage.setItem('token', data.token);
+                            }
+
+                            if (data.user.role === 'admin'|| data.user.role === 'staff') {
+                                window.location.href = 'admin-dashboard.html';
+                            } else {
+                                window.location.href = 'user-dashboard.html';
+                            }
+                        } else {
+                            errorMessageElem.textContent = data.message || 'Login failed.';
+                            errorMessageElem.style.display = 'block';
+                        }
+                    } catch (error) {
+                        console.error('Login error:', error);
+                        errorMessageElem.textContent = 'An error occurred. Please try again.';
+                        errorMessageElem.style.display = 'block';
+                    }
+                });
+            }
+
+            // --- UI EVENT LISTENERS ---
+            if (signUpBtn) {
+                signUpBtn.addEventListener('click', () => {
+                    window.location.href = 'signup.html';
+                });
+            }
+            
+            // ... your other UI logic for popups, password toggles, etc. can go here ...
+        });
+    </script>
 </body>
 </html>
