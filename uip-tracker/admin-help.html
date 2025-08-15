@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin - Report Management</title>
+  <link rel="stylesheet" href="admin-help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+<body>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo.png" alt="logo" />
+        <span class="logo-text">UIP Tracker</span>
+      </div>
+        <ul class="sidebar-links">
+        <li><a href="admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+        <li><a href="admin-attendance.html" ><span class="material-symbols-outlined">calendar_month</span>Attendance<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-onlineuser.html"><span class="material-symbols-outlined">account_circle</span>Online Users<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-event.html"><span class="material-symbols-outlined">notifications_active</span>Event<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-help.html" class="active"><span class="material-symbols-outlined">help</span>Help<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-developers.html"><span class="material-symbols-outlined">deployed_code</span>Developers<span class="chevron">&gt;</span></a></li>
+      </ul>
+    </aside>
+
+<main class="main-content">
+      <!-- Header -->
+       <div class="header">
+        <h1> Help Management</h1>
+        <button class="user-profile" onclick="toggleDropdown()">
+          <div class="user-avatar">AD</div>
+          <div class="user-details">
+            <h3>Administrator User</h3>
+            <p>Administrator</p>
+          </div>
+          <span class="material-symbols-outlined" style="color: #9197B3;">expand_more</span>
+          
+          <div class="dropdown-menu" id="userDropdown">
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">person</span>
+              Profile
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">settings</span>
+              Change Password
+            </a>
+          <div class="dropdown-divider" style="margin: 0 16px;"></div>
+            <a href="signin.html" class="dropdown-item">
+              <span class="material-symbols-outlined">logout</span>
+              Sign out
+            </a>
+          </div>
+        </button>
+      </div>
+
+   <div class="logs-container">
+                <div class="logs-header">
+                    <h2>SUBMITTED ISSUES</h2>
+                </div>
+                <table class="issues-table">
+                    <thead>
+                        <tr>
+                            <th>Application ID</th>
+                            <th>Name</th>
+                            <th>Ticket ID</th>
+                            <th>Subject</th>
+                            <th>Details</th>
+                            <th>Files</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="issuesTableBody">
+                        <!-- Rows will be injected here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+     <!-- MODAL HTML STRUCTURE -->
+<div class="modal-overlay" id="reportModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>View Report</h2>
+        </div>
+        <div class="modal-body">
+            <div class="detail-group" style="grid-column: 1 / 2;">
+                <label>TICKET ID</label>
+                <div class="detail-content" id="modal-ticket-id"></div>
+            </div>
+            <div class="detail-group" style="grid-column: 2 / 3;">
+                <label>APPLICATION ID</label>
+                <div class="detail-content" id="modal-user-id"></div>
+            </div>
+            <div class="detail-group">
+                <label>NAME</label>
+                <div class="detail-content" id="modal-user-name"></div>
+            </div>
+            <div class="detail-group">
+                <label>SUBJECT</label>
+                <div class="detail-content" id="modal-subject"></div>
+            </div>
+            <div class="detail-group">
+                <label>DETAILS</label>
+                <div class="detail-content" id="modal-details"></div>
+            </div>
+            <div class="detail-group">
+                <label>FILES</label>
+                <div class="detail-content" id="modal-files"></div>
+            </div>
+            <div class="detail-group">
+                <label>REPLY</label>
+                <textarea id="modal-reply-textarea" placeholder="Type your reply here..."></textarea>
+            </div>
+        </div>
+       
+<div class="modal-footer">
+    <button class="btn btn-back" id="modal-back-btn" onclick="closeModal()">BACK</button>
+    <button class="btn btn-reply" id="modal-send-reply-btn">REPLY</button>
+</div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('reportModal');
+    let currentReportId = null;
+
+    // --- MODAL FUNCTIONS ---
+    window.openModal = function(report) {
+        currentReportId = report.id;
+        document.getElementById('modal-ticket-id').textContent = report.ticket_id;
+        document.getElementById('modal-user-id').textContent = report.user_id;
+        document.getElementById('modal-user-name').textContent = report.user_name;
+        document.getElementById('modal-subject').textContent = report.subject;
+        document.getElementById('modal-details').innerHTML = report.details; // Use innerHTML to render formatted text
+        document.getElementById('modal-files').innerHTML = report.files ? `<a href="${report.files}" target="_blank" rel="noopener noreferrer">View File</a>` : 'No file submitted.';
+        document.getElementById('modal-reply-textarea').value = report.admin_reply || '';
+        modal.style.display = 'flex';
+    }
+
+    window.closeModal = function() {
+        modal.style.display = 'none';
+        currentReportId = null;
+    }
+
+    // --- API CALLS ---
+     async function sendReply() {
+        if (!currentReportId) return;
+        const replyText = document.getElementById('modal-reply-textarea').value;
+        if (!replyText.trim()) { return alert('Reply cannot be empty.'); }
+        try {
+            const response = await fetch(`api_handle_reply.php`, {
+                method: 'POST', // Using POST for simplicity with php://input
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentReportId, reply: replyText })
+            });
+            if (!response.ok) throw new Error('Failed to send reply.');
+            alert('Reply sent successfully!');
+            closeModal();
+            loadReports();
+        } catch (error) {
+            console.error('Error sending reply:', error);
+            alert('Error: Could not send reply.');
+        }
+    }
+
+    window.updateStatus = async function(reportId) {
+        if (!confirm(`Are you sure you want to mark report REP-${reportId} as "Fixed"?`)) return;
+        try {
+            const response = await fetch(`api_update_status.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: reportId })
+            });
+            if (!response.ok) throw new Error('Failed to update status.');
+            alert('Report status updated successfully!');
+            loadReports();
+        } catch (error) {
+            console.error('Error updating status:', error);
+            alert(`Error: ${error.message}`);
+        }
+    }
+
+    async function loadReports() {
+        const tableBody = document.getElementById('issuesTableBody');
+        try {
+            const response = await fetch('api_get_reports.php');
+            const result = await response.json();
+            const reports = result.data;
+            tableBody.innerHTML = '';
+
+            if (reports && reports.length > 0) {
+                reports.forEach(report => {
+                    const row = document.createElement('tr');
+                    const reportString = JSON.stringify(report).replace(/'/g, "&apos;");
+                    const viewButton = `<button class="btn btn-view" onclick='openModal(${reportString})'>View/Reply</button>`;
+                    const fixedButton = `<button class="btn btn-fixed" onclick="updateStatus(${report.id})"><span class="material-symbols-outlined">check</span></button>`;
+                    row.innerHTML = `
+                        <td>${report.user_id || 'N/A'}</td>
+                        <td>${report.user_name || 'N/A'}</td>
+                        <td>${report.ticket_id}</td>
+                        <td>${report.subject}</td>
+                        <td>${report.details ? report.details.substring(0, 10) : ''}...</td>
+                        <td>${report.files ? `<a href="${report.files}" target="_blank" rel="noopener noreferrer">Link</a>` : 'None'}</td>
+                        <td>${report.status}</td>
+                        <td><div class="action-group">${viewButton} ${report.status === 'Pending' ? fixedButton : ''}</div></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px;">No data available in table</td></tr>`;
+            }
+        } catch (error) {
+            console.error('Error fetching reports:', error);
+        }
+    }
+    
+    // --- INITIAL LOAD & EVENT LISTENERS ---
+    loadReports();
+    document.getElementById('modal-send-reply-btn').addEventListener('click', sendReply);
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) {
+            closeModal();
+        }
+    });
+});
+</script>
+<script>
+   // Dropdown functionality
+      function toggleDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('show');
+      }
+
+        // --- Logic for Logout Button ---
+        const logoutBtn = document.getElementById('logoutBtn');
+        if(logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Clear user data from storage
+                localStorage.removeItem('loggedInUser');
+                localStorage.removeItem('token');
+                // Redirect to login page
+                window.location.href = '/login.html';
+            });
+        }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const userProfile = document.querySelector('.user-profile');
+        if (userProfile && !userProfile.contains(event.target)) {
+          const dropdown = document.getElementById('userDropdown');
+          if (dropdown) {
+            dropdown.classList.remove('show');
+          }
+        }
+      });
+
+        document.querySelectorAll('.sidebar-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar-links a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+</script>
+</body>
+</html>

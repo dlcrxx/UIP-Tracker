@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developers</title>
+      <style>
+/* Importing Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #F0F4FF;
+  display: flex; /* This is key for the sidebar layout */
+}
+.sidebar {
+  position: sticky; /* Use sticky for modern browsers */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full height of the viewport */
+  width: 85px;
+  display: flex;
+  overflow-x: hidden;
+  flex-direction: column;
+  background: #ffffff;
+  padding: 25px 20px;
+  transition: all 0.4s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar:hover {
+  width: 260px;
+}
+
+.sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .sidebar-header img {
+  width: 42px;
+  border-radius: 50%;
+}
+
+.sidebar .sidebar-header span {
+  color: #021D44;
+  font-size: 1.25rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 25px;
+}
+
+.sidebar-links {
+  list-style: none;
+  margin-top: 20px;
+  height: 100%;
+}
+
+.sidebar-links li a {
+  display: flex;
+  align-items: center;
+  gap: 0 20px;
+  color: #9197B3;
+  font-weight: 500;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  padding: 12px 10px;
+  text-decoration: none;
+  transition: 0.2s ease;
+  border-radius: 6px;
+}
+
+.sidebar-links li a:hover {
+  color: #ffffff;
+  background: #021D44;
+}
+
+.sidebar-links li a.active {
+  color: #ffffff;
+  background: #021D44;
+}
+
+/* --- MASTER HEADER & MAIN CONTENT STYLES --- */
+.main-content {
+  flex-grow: 1; /* Take up remaining space */
+  padding: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  color: #021D44;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #021D44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+}
+
+.user-details h3 {
+  color: #021D44;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.user-details p {
+  color: #9197B3;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.dropdown-menu {
+  display: none; /* Controlled by JS */
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: #021D44;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.dropdown-item:hover {
+  background-color: #f8f9ff;
+}
+.dropdown-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 4px 0;
+}
+
+    </style>
+  <link rel="stylesheet" href="developers.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+<body>
+   <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo.png" alt="logo" />
+        <span class="logo-text">UIP Tracker</span>
+      </div>
+      <ul class="sidebar-links">
+        <li><a href="user-dashboard.html" class="active"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+        <li><a href="user-attendance.html"><span class="material-symbols-outlined">calendar_month</span>Attendance</a></li>
+        <li><a href="user-onlineuser.html"><span class="material-symbols-outlined">account_circle</span>Online Users</a></li>
+        <li><a href="user-event.html"><span class="material-symbols-outlined">notifications_active</span>Event</a></li>
+        <li><a href="user-help.html"><span class="material-symbols-outlined">help</span>Help</a></li>
+        <li><a href="user-developers.html"><span class="material-symbols-outlined">deployed_code</span>Developers</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <div class="header-title" style="display: flex; align-items: center; gap: 10px;">
+          <span class="material-symbols-outlined" style="font-size: 40px; color: #021D44;">groups</span>
+          <h1 style="color: #021D44;">DEVELOPERS</h1>
+        </div>
+           <div class="user-profile" id="profileBtn">
+           <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-details">
+            <h3 id="userName">User Name</h3>
+            <p id="userRole">Role</p>
+          </div>
+          <span class="material-symbols-outlined">expand_more</span>
+          <div class="dropdown-menu" id="userDropdown">
+            <a href="manage-profile.html" class="dropdown-item">Profile</a>
+            <div class="dropdown-divider"></div>
+            <a href="signin.html" id="logoutBtn" class="dropdown-item">Sign out</a>
+          </div>
+        </div>
+      </header>
+<!-- Row 1: Team Leader -->
+<div class="developers-row leader-row">
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="danyel.jpg" alt="Developer">
+        <p>Team Leader</p>
+        <h3>Panda Dela Cruz</h3>
+      </div>
+      <div class="flip-card-back">
+        <h4>More Info</h4>
+        <p>Email: bear@example.com</p>
+        <div style="height: 24px;"></div>
+        <button class="flip-card-back-btn">Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 2: Other Developers -->
+<div class="developers-row">
+  <!-- Card 1 -->
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="danyel.jpg" alt="Developer">
+        <p>Member</p>
+        <h3>Daniel Padilla</h3>
+      </div>
+      <div class="flip-card-back">
+        <h4>More Info</h4>
+        <p>Email: alex@example.com</p>
+        <div style="height: 24px;"></div>
+        <button class="flip-card-back-btn">Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="danyel.jpg" alt="Developer">
+        <p>Member</p>
+        <h3>Danyel Mondragon</h3>
+      </div>
+      <div class="flip-card-back">
+        <h4>More Info</h4>
+        <p>Email: john@example.com</p>
+        <div style="height: 24px;"></div>
+        <button class="flip-card-back-btn">Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="danyel.jpg" alt="Developer">
+        <p>Member</p>
+        <h3>Dani Pangilinan</h3>
+      </div>
+      <div class="flip-card-back">
+        <h4>More Info</h4>
+        <p>Email: maria@example.com</p>
+        <div style="height: 24px;"></div>
+        <button class="flip-card-back-btn">Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  const profileBtn = document.getElementById("profileBtn");
+  const profileMenu = document.getElementById("profileMenu");
+
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isExpanded = profileBtn.getAttribute("aria-expanded") === "true";
+    if (isExpanded) {
+      profileMenu.classList.remove("show");
+      profileBtn.setAttribute("aria-expanded", "false");
+    } else {
+      profileMenu.classList.add("show");
+      profileBtn.setAttribute("aria-expanded", "true");
+    }
+  });
+
+  document.addEventListener("click", () => {
+    profileMenu.classList.remove("show");
+    profileBtn.setAttribute("aria-expanded", "false");
+  });
+    });
+          // Dropdown functionality
+      function toggleDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('show');
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const userProfile = document.querySelector('.user-profile');
+        const dropdown = document.getElementById('userDropdown');
+        
+        if (!userProfile.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+
+      // Add click handlers for navigation
+      document.querySelectorAll('.sidebar-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Remove active class from all links
+          document.querySelectorAll('.sidebar-links a').forEach(l => l.classList.remove('active'));
+          
+          // Add active class to clicked link
+          this.classList.add('active');
+        });
+    });
+        
+</script>
+</body>
+</html>

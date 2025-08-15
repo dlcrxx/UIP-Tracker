@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signup3.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+    <!-- Brand Logo and Title Section -->
+    <div class="brand">
+        <img src="UIP logo.png" alt="Logo" class="brand-logo" />
+        <div class="brand-name">UIP Tracker</div>
+    </div>
+
+    <!-- Main Registration Container -->
+    <div class="container" id="container">
+        <!-- Left Side: Sign In Redirect Section -->
+        <div class="form-section">
+            <h2 class="form-title">Already have an account?</h2>
+            <div class="welcome-text">Sign in here to continue</div>
+            <button class="sign-in-btn" onclick="window.location.href='signin.html'">Sign In</button><br />
+            <img src="discord-light.png" alt="Discord" class="discord-icon" />
+        </div>
+
+        <!-- Right Side: Multi-Step Sign Up Form -->
+        <div class="form-box">
+            <h2>Sign Up</h2>
+            <div class="multi-step-form">
+                <form id="applicationForm">
+                    <!-- Step 4: Internship Date and Schedule Information -->
+                    <div class="form-step active">
+                        
+                        <!-- Internship Start Date -->
+                        <div class="input-group">
+                            <label>Start Date:</label>
+                            <div class="input-with-icon">
+                                <input type="date" id="startDate" required>
+                                <i class="fas fa-calendar-day icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Internship End Date -->
+                        <div class="input-group">
+                            <label>End Date:</label>
+                            <div class="input-with-icon">
+                                <input type="date" id="endDate" required>
+                                <i class="fas fa-calendar-check icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Daily Start Time Selection -->
+                        <div class="input-group">
+                            <label>Start Shift:</label>
+                            <div class="input-with-icon">
+                                <select id="startShift" required onchange="updateEndShift(this.value)">
+                                    <option value="" selected>-- Select Start Shift --</option>
+                                    <option value="08:00">8:00 AM</option>
+                                    <option value="09:00">9:00 AM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                </select>
+                                <i class="fas fa-clock icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Calculated End Time Display -->
+                        <div class="input-group">
+                            <label>End Shift:</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="endShift" readonly placeholder="Select End Shift">
+                                <i class="fas fa-stopwatch icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Step Progress Indicators (Step 4 of 6) -->
+                    <div class="step-indicators">
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step active"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                    </div>
+
+                    <!-- Form Navigation Controls -->
+                    <div class="form-navigation">
+                        <button id="backBtn" type="button">Back</button>
+                        <button id="nextBtn" type="button">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript Files -->
+    <script src="signup3.js"></script>
+    
+    <!-- Inline Script: End Shift Auto-Calculator -->
+    <script>
+        function updateEndShift(startTime) {
+            const endShift = document.getElementById('endShift');
+            switch(startTime) {
+                case '08:00':
+                    endShift.value = '5:00 PM';
+                    break;
+                case '09:00':
+                    endShift.value = '6:00 PM';
+                    break;
+                case '15:00':
+                    endShift.value = '12:00 AM';
+                    break;
+                default:
+                    endShift.value = '';
+            }
+        }
+    </script>
+</body>
+</html>

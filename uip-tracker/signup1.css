@@ -1,0 +1,555 @@
+/* ===== GLOBAL STYLES ===== */
+/* Reset all default margins, paddings, and set box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Poppins, sans-serif;
+}
+
+/* Main body styling with full-screen background image */
+body {
+    background-image: url('signup-bg.png');
+    background-size: cover;         /* Cover entire viewport */
+    background-position: center;    /* Center the background image */
+    background-repeat: no-repeat;   /* Prevent image repetition */
+    overflow: hidden;               /* Hide scrollbars for full-screen effect */
+}
+
+/* ===== BRAND LOGO SECTION ===== */
+/* Top-left brand logo and name container */
+.brand {
+    position: absolute;
+    top: 15px; 
+    left: 40px; 
+    display: flex;
+    flex-direction: row;        /* Horizontal layout */
+    align-items: center;        /* Vertically center logo and text */
+    z-index: 2;                /* Keep above background elements */
+}
+
+/* Brand logo image styling */
+.brand-logo {
+    width: 75px; 
+    height: 75px; 
+    margin-right: 10px;         /* Space between logo and text */
+}
+
+/* Brand name text styling */
+.brand-name {
+    color: #014080;             /* Navy blue color */
+    font-size: 20px; 
+    font-weight: 500;           /* Medium weight font */
+}
+
+/* ===== MAIN LAYOUT CONTAINER ===== */
+/* Main container for the entire signup page layout */
+.container {
+    display: flex;
+    justify-content: space-between;    /* Space elements apart */
+    align-items: flex-start;          /* Align to top */
+    width: 100%;
+    height: 100vh;                    /* Full viewport height */
+    position: relative;
+    padding: 50px 100px;             /* Padding from edges */
+}
+
+/* ===== LEFT SIDE: SIGN IN REDIRECT SECTION ===== */
+/* Left section containing welcome text and sign-in button */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 60px;
+    margin-top: 100px;
+    width: 50%;                      /* Half of container width */
+    height: 100%;
+    background: rgba(255, 255, 255, 0);  /* Transparent background */
+}
+
+/* Welcome title text styling */
+.form-title {
+    position: absolute;
+    width: 100%;
+    color: white;
+    font-size: 2.2vw; 
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 850;
+    top: 200px;
+    left: -20px;
+    text-align: right;
+}
+
+/* Subtitle welcome text styling */
+.welcome-text {
+    position: absolute;
+    width: 100%;
+    color: white;
+    top: 250px;   
+    right: 160px; 
+    font-size: 16px;
+    font-weight: 100;               /* Light font weight */
+    text-align: right;
+}
+
+/* Sign In redirect button styling */
+.sign-in-btn {
+    background-color: #4E7FB1;      /* Light blue background */
+    color: #ffffff;                 /* White text */               
+    border: 2px solid #ffffff;      /* White border */   
+    padding: 5px 20px;           
+    border-radius: 15px;            /* Rounded corners */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);  /* Drop shadow */
+    position: relative;
+    top: 90px; 
+    margin-left: 889px;             /* Specific positioning */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;               /* Semi-bold font */
+    font-size: 16px;
+    cursor: pointer;                /* Show pointer on hover */
+    transition: all 0.3s ease;      /* Smooth hover transitions */
+    white-space: nowrap;            /* Prevent text wrapping */
+}
+
+/* Sign In button hover effects */
+.sign-in-btn:hover {
+    background-color: #1c73ca;      /* Darker blue on hover */
+    color: #ffffff;
+    border: 2px solid #b3b8ca;      /* Light gray border */
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);  /* Enhanced shadow */
+}
+
+/* ===== RIGHT SIDE: SIGN UP FORM ===== */
+/* Main form container with semi-transparent background */
+.form-box {
+    background: rgba(78, 127, 176, 0.6);    /* Semi-transparent blue */
+    box-shadow: 5px 6px 4px rgba(2, 29, 68, 0.25);  /* Drop shadow */
+    padding: 24px; 
+    border-radius: 15px;                    /* Rounded corners */
+    color: white;                           /* White text for contrast */
+    min-width: 375px;                       /* Minimum form width */
+    position: absolute;
+    right: 829px;                          /* Specific positioning */
+    top: 50%;
+    transform: translateY(-50%);            /* Center vertically */
+}
+
+/* General button styling within form */
+.form-box button {
+    padding: 10px; 
+    font-size: 14px;
+}
+
+/* Form title (Sign Up) styling */
+.form-box h2 {
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 750;                       /* Extra bold */
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Form label styling */
+.form-box label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Basic form input styling */
+.form-box input {
+    width: 100%;
+    padding: 8px;
+    font-size: 13px;
+    margin-top: 4px;
+    border-radius: 8px;
+    border: 1px #014080 solid;              /* Navy blue border */
+    outline: none;                          /* Remove focus outline */
+}
+
+/* General form button styling */
+.form-box button {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    background: #001f3f;                    /* Dark navy background */
+    color: white;
+    border: none;
+    border-radius: 500px;                   /* Fully rounded button */
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+/* Input placeholder text styling */
+input::placeholder {
+    color: #808080;                         /* Gray placeholder text */
+}
+
+/* ===== INPUT GROUPS WITH ICONS ===== */
+/* Container for input fields with icons */
+.input-group {
+    position: relative;                     /* For absolute positioning of icons */
+    margin-bottom: 15px;                   /* Space between input groups */
+}
+
+/* Icon positioning within input groups */
+.input-group i {
+    position: absolute;
+    left: 10px;                            /* 10px from left edge */
+    top: 70%;                              /* Vertically centered */
+    transform: translateY(-50%);           /* Perfect vertical centering */
+    color: #808080;                        /* Gray icon color */
+    font-size: 16px;
+}
+
+/* Enhanced input styling with icon padding */
+.input-group input {
+    width: 100%;
+    height: 35px;                          /* Fixed height for consistency */
+    padding-left: 35px;                    /* Space for icon */
+    font-family: Poppins, sans-serif;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid #014080;             /* Navy blue border */
+    outline: none;                         /* Remove browser focus outline */
+    box-sizing: border-box;
+    color: #000;                           /* Black text */
+    background-color: white;
+    appearance: none;                      /* Remove browser default styling */
+    -webkit-appearance: none;              /* Remove WebKit default styling */
+    -moz-appearance: none;                 /* Remove Mozilla default styling */
+}
+
+/* ===== MULTI-STEP PROGRESS INDICATORS ===== */
+/* Container for step indicator dots */
+.step-indicators {
+    display: flex;
+    justify-content: center;               /* Center the dots */
+    margin-top: 15px;
+    gap: 12px;                            /* Space between dots */
+}
+
+/* Individual step indicator dot */
+.step {
+    height: 13px;
+    width: 13px;
+    margin: -4px;                         /* Adjust spacing */
+    background-color: #bbb;               /* Inactive gray color */
+    border-radius: 50%;                   /* Perfect circle */
+    display: inline-block;
+    transition: background-color 0.3s;    /* Smooth color transition */
+}
+
+/* Active step indicator styling */
+.step.active {
+    background-color: #014080;            /* Navy blue for active step */
+}
+
+/* ===== FORM NAVIGATION BUTTONS ===== */
+/* Container for Back and Next buttons */
+.form-navigation {
+    display: flex;
+    justify-content: center;              /* Center the buttons */
+    gap: 18px;                           /* Space between buttons */
+    margin-top: 5px;
+}
+
+/* Back and Next button styling */
+#nextBtn, #backBtn {
+    background-color: #014080;            /* Navy blue background */
+    color: white;
+    border: 2px solid transparent;        /* Transparent border initially */
+    padding: 7px 15px;
+    cursor: pointer;
+    border-radius: 20px;                  /* Rounded button shape */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;                     /* Semi-bold font */
+    font-size: 14px;
+    transition: all 0.3s ease;            /* Smooth hover transitions */
+    outline: none;                        /* Remove focus outline */
+    width: 130px;                         /* Fixed button width */
+    margin: 1 auto;                       /* Center alignment */
+}
+
+/* Navigation button hover effects */
+#nextBtn:hover, #backBtn:hover {
+    background-color: #2163a8;            /* Lighter blue on hover */
+    color: #ffffff;
+    border: 2px solid #b3b8ca;            /* Light gray border */
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.5);  /* Enhanced shadow */
+    transform: translateY(-2px);          /* Slight upward movement */
+}
+
+/* Navigation button active (clicked) effects */
+#nextBtn:active, #backBtn:active {
+    transform: translateY(0);             /* Return to original position */
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);  /* Reduced shadow */
+}
+
+/* ===== DISCORD ICON ===== */
+/* Fixed position Discord icon in bottom-right corner */
+.discord-icon {
+    position: fixed;                      /* Fixed to viewport */
+    bottom: 20px;                        /* 20px from bottom */   
+    right: 28px;                         /* 28px from right */    
+    width: 50px;  
+    height: 50px;
+    cursor: pointer;                      /* Show pointer on hover */
+    z-index: 9999;                       /* Highest z-index for visibility */
+    transition: all 0.3s ease;           /* Smooth hover transitions */
+}
+
+/* Discord icon hover effects */
+.discord-icon:hover {
+    opacity: 0.8;                        /* Slight transparency */
+    transform: scale(1.1);               /* Slight size increase */
+}
+
+/* ===== FADE TRANSITION STYLES ===== */
+body.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+body {
+    opacity: 1;
+    transition: opacity 0.3s ease-in;
+}
+
+/* Optional: To make it smoother, you can define keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in-on-load {
+    animation: fadeIn 0.3 ease-in;
+}
+
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Large Desktop (1200px and up) */
+@media (min-width: 1200px) {
+    .form-title {
+        font-size: 36px; /* limit max size */
+    }
+}
+
+/* Desktop and Tablet Landscape (992px to 1199px) */
+@media (max-width: 1199px) {
+    .container {
+        left: -20px; /* Adjust container positioning */
+    }
+    
+    .form-box {
+        right: 60px; /* Adjust form box position */
+        min-width: 320px;
+    }
+    
+    .form-title {
+        font-size: 40px;
+    }
+}
+
+/* Tablet Portrait (768px to 991px) */
+@media (max-width: 991px) {
+    .container {
+        flex-direction: column;
+        left: 0;
+        align-items: center;
+    }
+    
+    .form-section {
+        width: 100%;
+        padding-left: 20px;
+        margin-top: 50px;
+        text-align: center;
+    }
+    
+    .form-title {
+        font-size: 35px;
+        margin-left: 0;
+        text-align: center;
+    }
+    
+    .welcome-text {
+        margin-left: 0;
+        text-align: center;
+    }
+    
+    .sign-up-btn,
+    .check-status-btn {
+        margin-left: 0;
+        margin: 10px auto;
+        display: block;
+    }
+    
+    .form-box {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        margin: 20px auto;
+        width: 90%;
+        max-width: 400px;
+    }
+    
+    .brand {
+        left: 20px;
+        top: 10px;
+    }
+    
+    .brand-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .brand-name {
+        font-size: 18px;
+    }
+}
+
+/* Mobile Landscape (576px to 767px) */
+@media (max-width: 767px) {
+    body {
+        overflow-y: auto; /* Allow scrolling on mobile */
+    }
+    
+    .form-title {
+        font-size: 28px;
+        margin-top: 15px;
+    }
+    
+    .welcome-text {
+        font-size: 14px;
+        margin-top: 15px;
+    }
+    
+    .form-box {
+        padding: 25px;
+        width: 95%;
+        min-width: 280px;
+    }
+    
+    .form-box h2 {
+        font-size: 18px;
+    }
+    
+    .sign-up-btn,
+    .check-status-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+        margin-top: 15px;
+    }
+    
+    .popup-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .discord-icon {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
+/* Mobile Portrait (up to 575px) */
+@media (max-width: 575px) {
+    .brand {
+        left: 15px;
+        top: 8px;
+    }
+    
+    .brand-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .brand-name {
+        font-size: 16px;
+    }
+    
+    .form-section {
+        padding-left: 15px;
+        margin-top: 80px;
+    }
+    
+    .form-title {
+        font-size: 24px;
+        margin-top: 10px;
+    }
+    
+    .welcome-text {
+        font-size: 13px;
+        margin-top: 10px;
+    }
+    
+    .form-box {
+        padding: 20px;
+        width: 95%;
+        min-width: 260px;
+    }
+    
+    .form-box input {
+        padding: 8px;
+        font-size: 14px;
+    }
+    
+    .form-box button {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .form-box label {
+        font-size: 13px;
+    }
+    
+    .remember-me {
+        font-size: 9px;
+    }
+    
+    .forgot-password {
+        font-size: 10px;
+    }
+    
+    .popup-content {
+        width: 95%;
+        padding: 15px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .popup-content h2 {
+        font-size: 18px;
+    }
+    
+    .popup-content input,
+    .popup-content button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+/* Extra Small Mobile (up to 320px) */
+@media (max-width: 320px) {
+    .form-title {
+        font-size: 20px;
+    }
+    
+    .welcome-text {
+        font-size: 12px;
+    }
+    
+    .form-box {
+        padding: 15px;
+        min-width: 240px;
+    }
+    
+    .form-box h2 {
+        font-size: 16px;
+    }
+}

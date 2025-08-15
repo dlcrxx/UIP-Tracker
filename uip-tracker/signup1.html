@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signup1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <!-- Brand Logo and Title Section -->
+    <div class="brand">
+        <img src="UIP logo.png" alt="Logo" class="brand-logo">
+        <div class="brand-name">UIP Tracker</div>
+    </div>
+
+    <!-- Main Registration Container -->
+    <div class="container" id="container">
+        <!-- Left Side: Sign In Redirect Section -->
+        <div class="form-section">
+            <h2 class="form-title">Already have an account?</h2>
+            <div class="welcome-text">
+                Sign in here to continue
+            </div>
+            <button class="sign-in-btn">Sign In</button><br>
+            <img src="discord-light.png" alt="Discord" class="discord-icon" />
+        </div>
+        
+        <!-- Right Side: Multi-Step Sign Up Form -->
+        <div class="form-box">
+            <h2>Sign Up</h2>
+            <div class="multi-step-form">
+                <form id="applicationForm">
+                    
+                    <!-- Step 2: Contact and Personal Information -->
+                    <div class="form-step">
+                        
+                        <!-- Email Address Input with Validation -->
+                        <div class="input-group">
+                            <label>Email Address:</label>
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <!-- Mobile Number Input with Format Validation -->
+                        <div class="input-group">
+                            <label>Mobile No.:</label>
+                            <i class="fa-solid fa-phone"></i>
+                            <input
+                             type="tel"
+                             id="mobile"
+                             placeholder="09XX-XXX-XXXX"
+                             maxlength="13"
+                             required
+                            >
+                        </div>
+                        
+                        <!-- Birthday Date Picker -->
+                        <div class="input-group">
+                            <label>Birthday:</label>
+                            <i class="fa-solid fa-calendar"></i>
+                            <input type="date" required>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Step Progress Indicators (Step 2 of 6) -->
+                    <div class="step-indicators">
+                        <span class="step"></span>
+                        <span class="step active"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                    </div>
+
+                    <!-- Form Navigation Controls -->
+                    <div class="form-navigation">
+                        <button id="backBtn" type="button">Back</button>
+                        <button id="nextBtn" type="button">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- External JavaScript File for Form Logic -->
+    <script src="signup1.js"></script>
+</body>
+</html>

@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User-attendance</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        background: #F0F4FF;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 85px;
+        display: flex;
+        overflow-x: hidden;
+        flex-direction: column;
+        background: #ffffff;
+        padding: 25px 20px;
+        transition: all 0.4s ease;
+        z-index: 1000;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar:hover {
+        width: 260px;
+      }
+
+      .sidebar .sidebar-header {
+        display: flex;
+        align-items: center;
+      }
+
+      .sidebar .sidebar-header img {
+        width: 42px;
+        border-radius: 50%;
+      }
+
+      .sidebar .sidebar-header span {
+        color: #021D44;
+        font-size: 1.25rem;
+        font-weight: 600;
+        white-space: nowrap;
+        margin-left: 35px;
+      }
+
+      .sidebar-links {
+        list-style: none;
+        margin-top: 20px;
+        height: 80%;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+
+      .sidebar-links::-webkit-scrollbar {
+        display: none;
+      }
+
+      .sidebar-links li a {
+        display: flex;
+        align-items: center;
+        gap: 0 20px;
+        color: #9197B3;
+        font-weight: 500;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        padding: 12px 10px;
+        text-decoration: none;
+        transition: 0.2s ease;
+        border-radius: 6px;
+      }
+
+      .sidebar-links li a:hover {
+        color: #ffffff;
+        background: #021D44;
+        border-radius: 10px;
+      }
+
+      .sidebar-links li a.active {
+        color: #ffffff;
+        background: #021D44;
+        border-radius: 10px;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 85px;
+        padding: 30px;
+        transition: margin-left 0.4s ease;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 0;
+        background: transparent;
+      }
+
+      .header h1 {
+        color: #021D44;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+        position: relative;
+      }
+
+      .user-profile:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #021D44;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+      }
+
+      .user-details h3 {
+        color: #021D44;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .user-details p {
+        color: #9197B3;
+        font-size: 0.8rem;
+        margin: 0;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 8px 0;
+        min-width: 180px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        color: #021D44;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+        font-size: 0.9rem;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f8f9ff;
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background-color: #e0e0e0;
+        margin: 4px 0;
+      }
+
+      /* Stats Cards */
+      .stats-wrapper {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .stats-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .stats-cards .card {
+        flex: 1;
+        min-width: 150px;
+        background: #021D44;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 500;
+        color: white;
+      }
+
+      .stats-cards .card h3 {
+        margin-top: 5px;
+        font-size: 20px;
+        color: #eff0f1;
+      }
+
+      /* banner */
+      .announcement-banner {
+        background-color: #021D44; 
+        color: white;            
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        display: none; /* Hidden by default */
+      }
+
+      /* Time Section */
+      .time-section {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      }
+
+      /* Time blue box */
+      .time-box {
+        background: #021D44;
+        padding: 50px 70px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .time-box h1 {
+        font-size: 3.7rem;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+      }
+
+      /* Date and buttons container */
+      .date-and-buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+      }
+
+      .date-and-buttons p {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #021D44;
+        margin: 0;
+      }
+
+      /* Time button container */
+      .time-buttons {
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Single toggle button */
+      .btn-toggle {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 120px;
+      }
+      
+      .btn-toggle:disabled {
+          background: #cccccc;
+          cursor: not-allowed;
+      }
+
+      .btn-toggle.time-in {
+        background: #021D44;
+        color: white;
+      }
+
+      .btn-toggle.time-in:hover:not(:disabled) {
+        background: #04306d;
+      }
+
+      .btn-toggle.time-out {
+        background: #dc3545;
+        color: white;
+      }
+
+      .btn-toggle.time-out:hover:not(:disabled) {
+        background: #c82333;
+      }
+
+      /* Table Section */
+      .table-section {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        border: 1px solid #e5e7eb;
+      }
+
+      .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      
+      .table-header h3 {
+        margin: 0;
+        color: #021D44;
+      }
+
+      .table-header input {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 0.9rem;
+        width: 250px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      thead {
+        background: #021D44;
+        color: white;
+      }
+
+      th, td {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      tbody tr:hover {
+        background: #f4f6fb;
+      }
+      
+      tfoot {
+        background-color: #f8f9fa;
+      }
+
+      /* --- UPDATED PAGINATION STYLES --- */
+      .pagination-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+      }
+
+      .pagination-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .entries-info {
+        font-size: 0.9rem;
+        color: #495057;
+      }
+      
+      .rows-per-page-select {
+        padding: 5px 8px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 0.9rem;
+      }
+
+      .pagination-buttons {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .pagination-btn {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 0.9rem;
+      }
+
+      .pagination-btn.page-number {
+        background-color: #021D44;
+        color: white;
+        border-color: #021D44;
+        cursor: default;
+      }
+      
+      .pagination-btn:hover:not(:disabled):not(.page-number) {
+        background-color: #f4f4f4;
+      }
+
+      .pagination-btn:disabled {
+        background-color: #e9ecef;
+        color: #6c757d;
+        cursor: not-allowed;
+      }
+      
+      /* Status message */
+      .status-message {
+        background: #d1ecf1;
+        color: #0c5460;
+        padding: 12px 18px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #bee5eb;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      .status-message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+      }
+      
+      .status-message.success {
+        background: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .time-section {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .time-buttons {
+          width: 100%;
+          justify-content: flex-start;
+        }
+        
+        .table-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .table-header input {
+            width: 100%;
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo.png" alt="logo" />
+        <span class="logo-text">UIP <br>Tracker</span>
+      </div>
+
+      <ul class="sidebar-links">
+        <li><a href="user-dashboard.html"><span class="material-symbols-outlined">space_dashboard</span>Dashboard<span class="chevron">&gt;</span></a></li>
+        <li><a href="user-attendance.html" class="active"><span class="material-symbols-outlined">event_available</span>Attendance<span class="chevron">&gt;</span></a></li>
+        <li><a href="user-onlineusers.html"><span class="material-symbols-outlined">account_circle</span>Online Users<span class="chevron">&gt;</span></a></li>
+        <li><a href="user-event.html"><span class="material-symbols-outlined">notifications_active</span>Event<span class="chevron">&gt;</span></a></li>
+        <li><a href="user-help.html"><span class="material-symbols-outlined">help</span>Help<span class="chevron">&gt;</span></a></li>
+        <li><a href="user-developers.html"><span class="material-symbols-outlined">engineering</span>Developers<span class="chevron">&gt;</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <h1 id="greetingHeader">Hello,</h1>
+        <button class="user-profile" onclick="toggleDropdown()">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-details">
+            <h3 id="userProfileName"></h3>
+            <p id="userProfileRole"></p>
+          </div>
+          <span class="material-symbols-outlined" style="color: #9197B3;">expand_more</span>
+          
+          <div class="dropdown-menu" id="userDropdown">
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">person</span>
+              Profile
+            </a>
+            <a href="#" class="dropdown-item">
+              <span class="material-symbols-outlined">settings</span>
+              Change Password
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="signin.html" class="dropdown-item" onclick="logout()">
+              <span class="material-symbols-outlined">logout</span>
+              Sign out
+            </a>
+          </div>
+        </button>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-wrapper">
+        <div class="stats-cards">
+          <div class="card">Required Hours <h3 id="requiredHours">0</h3></div>
+          <div class="card">Rendered Hours <h3 id="renderedHours">0</h3></div>
+          <div class="card">Remaining Hours <h3 id="remainingHours">0</h3></div>
+          <div class="card">Deducted Hours <h3 id="deductedHours">0</h3></div>
+          <div class="card">Penalty Hours <h3 id="penaltyHours">0</h3></div>
+        </div>
+      </div>
+
+      <!-- Announcement Banner - Used for shift-specific warnings -->
+      <div class="announcement-banner" id="announcementBanner"></div>
+
+      <!-- Status Message - Used for primary system status -->
+      <div class="status-message" id="statusMessage"></div>
+
+      <!-- Time Section -->
+      <div class="time-section">
+        <div class="time-box">
+          <h1 id="time">00:00:00 PM</h1>
+        </div>
+        <div class="date-and-buttons">
+          <p id="date">August 04, 2025 Monday</p>
+          <div class="time-buttons">
+            <button id="btnToggle" class="btn-toggle time-in" disabled>Loading...</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attendance Logs -->
+      <section class="table-section">
+        <div class="table-header">
+          <h3>Attendance Logs</h3>
+          <input type="text" id="attendanceSearch" placeholder="Search logs...">
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th><th>Date</th><th>Time In</th><th>Time Out</th><th>Remark</th><th>Rendered</th>
+            </tr>
+          </thead>
+          <tbody id="attendanceBody"></tbody>
+          <tfoot>
+            <tr>
+                <td colspan="6">
+                    <div class="pagination-controls" id="attendancePagination"></div>
+                </td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+      <!-- Deduction & Penalty Logs -->
+      <section class="table-section">
+        <div class="table-header">
+          <h3>Deduction & Penalty Logs</h3>
+          <input type="text" id="penaltySearch" placeholder="Search logs...">
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th><th>Hours</th><th>Reason</th><th>By</th><th>Type</th><th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="penaltyBody"></tbody>
+           <tfoot>
+            <tr>
+                <td colspan="6">
+                    <div class="pagination-controls" id="penaltyPagination"></div>
+                </td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+    </main>
+
+    <script>
+
+    // ===================================================================================
+    // ATTENDANCE SYSTEM LOGIC (REVISED)
+    // ===================================================================================
+
+    // ========== 1. CONFIGURATION & STATE MANAGEMENT ==========
+    
+    const SHIFT_CONFIG = {
+        1: { name: "Morning Shift", timeInStart: { h: 7, m: 45 }, timeInLate: { h: 10, m: 0 }, timeOutEnd: { h: 17, m: 25 }, warnings: { timeIn: (h, m) => h >= 7 && h < 10, timeOut: (h, m) => h === 17 && m >= 0 && m < 25 }, messages: { earlyTimeIn: "PLEASE WAIT UNTIL 7:45 AM TO TIME IN", lateTimeInWarning: "Time in beyond 10:00 AM will be marked as absent.", lateTimeInDisabled: "Please be advised that Time in beyond 10:00 AM is considered absent.", lateTimeOutWarning: "Time out button will be disabled exactly at 5:25 PM.", lateTimeOutDisabled: "UNABLE TO TIME OUT BEYOND 5:25 PM" } },
+        2: { name: "Mid-Day Shift", timeInStart: { h: 8, m: 45 }, timeInLate: { h: 11, m: 0 }, timeOutEnd: { h: 18, m: 25 }, warnings: { timeIn: (h, m) => h >= 8 && h < 11, timeOut: (h, m) => h === 18 && m >= 0 && m < 25 }, messages: { earlyTimeIn: "PLEASE WAIT UNTIL 8:45 AM TO TIME IN", lateTimeInWarning: "Time in beyond 11:00 AM will be marked as absent.", lateTimeInDisabled: "Time in beyond 11:00 AM is considered absent.", lateTimeOutWarning: "Time out button will be disabled exactly at 6:25 PM.", lateTimeOutDisabled: "UNABLE TO TIME OUT BEYOND 6:25 PM" } }
+    };
+
+    const currentUser = {
+        fullName: "Danielle Dela Cruz",
+        userName: "danielle.cruz",
+        role: "Intern",
+        shift: 1,
+        requiredHours: 300
+    };
+    
+    const attendanceState = {
+        get: () => JSON.parse(localStorage.getItem(`attendance_${currentUser.userName}`) || '{}'),
+        set: (newState) => localStorage.setItem(`attendance_${currentUser.userName}`, JSON.stringify(newState)),
+        clear: () => localStorage.removeItem(`attendance_${currentUser.userName}`)
+    };
+    
+    // --- CHANGE: Use let for dynamic row counts ---
+    let attendance_rowsPerPage = 4;
+    let penalty_rowsPerPage = 4;
+    
+    let attendance_currentPage = 1;
+    let penalty_currentPage = 1;
+    let attendance_filteredData = [...MOCK_ATTENDANCE_DATA];
+    let penalty_filteredData = [...MOCK_PENALTY_DATA];
+
+
+    // ========== 2. MOCK (SIMULATED) SERVER API CALLS ==========
+    
+    async function getServerTime() { return new Promise(resolve => resolve(new Date())); }
+    async function checkBackendStatus() { return new Promise(resolve => resolve({ hasDuty: true, isAttendanceClosed: false, offBoardingReady: false, attendanceCompleted: false, closureMessage: "ATTENDANCE CLOSED" }));}
+
+    
+    // ========== 3. CORE ATTENDANCE & PAGE INITIALIZATION LOGIC ==========
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeAttendancePage();
+    });
+
+    async function initializeAttendancePage() {
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        updateUserInformation();
+        updateStatsCards();
+        
+        setupTable('attendance', MOCK_ATTENDANCE_DATA, renderAttendanceRow);
+        setupTable('penalty', MOCK_PENALTY_DATA, renderPenaltyRow);
+        
+        const serverTime = await getServerTime();
+        if (serverTime.getDay() === 0 || serverTime.getDay() === 6) {
+            showStatusMessage("ATTENDANCE ONLY AVAILABLE ON BUSINESS DAYS", "error");
+            disableAllButtons("Weekend");
+            return;
+        }
+
+        const backendStatus = await checkBackendStatus();
+        if (backendStatus.isAttendanceClosed) {
+            showStatusMessage(backendStatus.closureMessage, "error");
+            disableAllButtons("Closed");
+            return;
+        }
+
+        const todayStr = serverTime.toDateString();
+        if (attendanceState.get().date !== todayStr) {
+            attendanceState.clear();
+        }
+
+        document.getElementById('btnToggle').addEventListener('click', handleAttendanceToggle);
+        updateUI(); 
+        setInterval(updateUI, 5000);
+    }
+    
+    async function handleAttendanceToggle() {
+        if (attendanceState.get().isTimedIn) await timeOut();
+        else await timeIn();
+    }
+    
+    async function timeIn() {
+        const serverTime = await getServerTime();
+        const shift = SHIFT_CONFIG[currentUser.shift];
+        const h = serverTime.getHours(), m = serverTime.getMinutes();
+        
+        const isTooEarly = h < shift.timeInStart.h || (h === shift.timeInStart.h && m < shift.timeInStart.m);
+        if (isTooEarly) { alert(shift.messages.earlyTimeIn); return; }
+        
+        const isTooLate = h > shift.timeInLate.h || (h === shift.timeInLate.h && m >= shift.timeInLate.m);
+        if (isTooLate) { alert(shift.messages.lateTimeInDisabled); return; }
+        
+        const newState = { date: serverTime.toDateString(), isTimedIn: true, timeInTimestamp: serverTime.getTime(), remark: (h >= 8 ? "Late" : "On-Time") };
+        attendanceState.set(newState);
+        
+        alert(`Successfully Timed In at ${serverTime.toLocaleTimeString()}`);
+        await updateUI();
+    }
+    
+    async function timeOut() {
+       const serverTime = await getServerTime();
+       const shift = SHIFT_CONFIG[currentUser.shift];
+       const h = serverTime.getHours(), m = serverTime.getMinutes();
+       const isTooLate = h > shift.timeOutEnd.h || (h === shift.timeOutEnd.h && m >= shift.timeOutEnd.m);
+       if(isTooLate) { alert(shift.messages.lateTimeOutDisabled); return; }
+
+       const storedState = attendanceState.get();
+       if (!storedState.isTimedIn) { alert("Error: You have not timed in yet."); return; }
+       
+        const timeInDate = new Date(storedState.timeInTimestamp);
+        const hoursRendered = (serverTime.getTime() - timeInDate.getTime()) / 3600000;
+        attendanceState.set({ ...storedState, isTimedIn: false, timeOutTimestamp: serverTime.getTime(), hoursRendered: hoursRendered.toFixed(2) });
+
+        MOCK_ATTENDANCE_DATA.unshift({ name: currentUser.fullName, date: serverTime.toLocaleDateString(), timeIn: timeInDate.toLocaleTimeString(), timeOut: serverTime.toLocaleTimeString(), remark: storedState.remark, rendered: hoursRendered });
+        
+        handleSearch('attendance', MOCK_ATTENDANCE_DATA, renderAttendanceRow); 
+        updateStatsCards();
+
+        showStatusMessage("ATTENDANCE COMPLETED", "success");
+        disableAllButtons("Done for today");
+        alert(`Successfully Timed Out. Hours rendered: ${hoursRendered.toFixed(2)}`);
+    }
+
+    // ========== 4. DYNAMIC TABLE & UI FUNCTIONS ==========
+
+    function updateUserInformation() {
+        const firstName = currentUser.fullName.split(' ')[0];
+        document.getElementById('greetingHeader').textContent = `Hello ${firstName},`;
+        document.getElementById('userProfileName').textContent = currentUser.fullName;
+        document.getElementById('userProfileRole').textContent = currentUser.role;
+        const nameParts = currentUser.fullName.split(' ');
+        const initials = (nameParts.length > 1 ? nameParts[0][0] + nameParts[nameParts.length - 1][0] : nameParts[0][0]).toUpperCase();
+        document.getElementById('userAvatar').textContent = initials;
+    }
+
+    function updateStatsCards() {
+        const totalRendered = MOCK_ATTENDANCE_DATA.reduce((sum, log) => sum + log.rendered, 0);
+        const totalDeducted = MOCK_PENALTY_DATA.filter(log => log.type === 'Deduction').reduce((sum, log) => sum + log.hours, 0);
+        const totalPenalty = MOCK_PENALTY_DATA.filter(log => log.type === 'Penalty').reduce((sum, log) => sum + log.hours, 0);
+        const remaining = currentUser.requiredHours - (totalRendered - totalDeducted);
+
+        document.getElementById('requiredHours').textContent = currentUser.requiredHours.toFixed(2);
+        document.getElementById('renderedHours').textContent = totalRendered.toFixed(2);
+        document.getElementById('deductedHours').textContent = totalDeducted.toFixed(2);
+        document.getElementById('penaltyHours').textContent = totalPenalty.toFixed(2);
+        document.getElementById('remainingHours').textContent = (remaining > 0 ? remaining : 0).toFixed(2);
+    }
+    
+    async function updateUI() {
+        const serverTime = await getServerTime();
+        const shift = SHIFT_CONFIG[currentUser.shift];
+        const storedState = attendanceState.get();
+        const btn = document.getElementById('btnToggle');
+        const h = serverTime.getHours();
+        const m = serverTime.getMinutes();
+
+        if (document.getElementById('statusMessage').textContent === "ATTENDANCE COMPLETED") return;
+        
+        if (storedState.isTimedIn) {
+            btn.textContent = 'Time Out';
+            btn.className = 'btn-toggle time-out';
+            btn.disabled = false;
+            
+            const isTimeoutWarning = shift.warnings.timeOut(h, m);
+            const isTimeoutDisabled = h > shift.timeOutEnd.h || (h === shift.timeOutEnd.h && m >= shift.timeOutEnd.m);
+
+            if (isTimeoutDisabled) {
+                btn.disabled = true;
+                showAnnouncement(shift.messages.lateTimeOutDisabled, 'error');
+            } else if (isTimeoutWarning) {
+                showAnnouncement(shift.messages.lateTimeOutWarning, 'info');
+            } else {
+                hideAnnouncement();
+            }
+
+        } else {
+            btn.textContent = 'Time In';
+            btn.className = 'btn-toggle time-in';
+            
+            const isTooEarly = h < shift.timeInStart.h || (h === shift.timeInStart.h && m < shift.timeInStart.m);
+            const isTooLate = h > shift.timeInLate.h || (h === shift.timeInLate.h && m >= shift.timeInLate.m);
+            const isTimeInWarning = shift.warnings.timeIn(h, m);
+
+            if (isTooEarly) {
+                btn.disabled = true;
+                showStatusMessage(shift.messages.earlyTimeIn, 'info');
+            } else if (isTooLate) {
+                btn.disabled = true;
+                showStatusMessage(shift.messages.lateTimeInDisabled, 'error');
+            } else {
+                btn.disabled = false;
+                showStatusMessage(`You are on ${shift.name}.`, 'info');
+            }
+            
+            if (isTimeInWarning && !isTooLate) {
+                showAnnouncement(shift.messages.lateTimeInWarning, 'info');
+            } else {
+                hideAnnouncement();
+            }
+        }
+    }
+    
+    async function updateClock() {
+        const now = await getServerTime();
+        document.getElementById('time').textContent = now.toLocaleTimeString('en-US');
+        document.getElementById('date').textContent = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+    }
+
+    // ========== 5. GENERIC TABLE, PAGINATION, AND SEARCH LOGIC ==========
+
+    function setupTable(type, originalData, renderRowFunc) {
+        const searchInput = document.getElementById(`${type}Search`);
+        searchInput.addEventListener('input', () => handleSearch(type, originalData, renderRowFunc));
+        renderTable(type, originalData, renderRowFunc, 1);
+    }
+    
+    function handleSearch(type, originalData, renderRowFunc) {
+        const searchTerm = document.getElementById(`${type}Search`).value.toLowerCase();
+        const filtered = originalData.filter(item => 
+            Object.values(item).some(val => 
+                String(val).toLowerCase().includes(searchTerm)
+            )
+        );
+
+        if (type === 'attendance') attendance_filteredData = filtered;
+        else penalty_filteredData = filtered;
+
+        renderTable(type, filtered, renderRowFunc, 1);
+    }
+
+    function renderTable(type, data, renderRowFunc, page) {
+        const tableBody = document.getElementById(`${type}Body`);
+        tableBody.innerHTML = '';
+        
+        if (type === 'attendance') attendance_currentPage = page;
+        else penalty_currentPage = page;
+
+        // --- CHANGE: Use dynamic rowsPerPage variable ---
+        const rowsPerPage = (type === 'attendance') ? attendance_rowsPerPage : penalty_rowsPerPage;
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedData = data.slice(start, end);
+
+        paginatedData.forEach(item => {
+            tableBody.innerHTML += renderRowFunc(item);
+        });
+
+        updatePaginationControls(type, data.length, page, renderRowFunc);
+    }
+    
+    // --- START: FULLY REVISED PAGINATION CONTROLS FUNCTION ---
+    function updatePaginationControls(type, totalItems, currentPage, renderRowFunc) {
+        const paginationContainer = document.getElementById(`${type}Pagination`);
+        let rowsPerPage = (type === 'attendance') ? attendance_rowsPerPage : penalty_rowsPerPage;
+        const totalPages = Math.ceil(totalItems / rowsPerPage);
+        paginationContainer.innerHTML = '';
+
+        if (totalItems === 0) {
+            paginationContainer.innerHTML = '<span class="entries-info">No entries found.</span>';
+            return;
+        }
+        
+        // --- LEFT SIDE (Info + Selector) ---
+        const leftSide = document.createElement('div');
+        leftSide.className = 'pagination-left';
+
+        // Entries Info Text
+        const startEntry = (currentPage - 1) * rowsPerPage + 1;
+        const endEntry = Math.min(currentPage * rowsPerPage, totalItems);
+        const entriesInfo = document.createElement('span');
+        entriesInfo.className = 'entries-info';
+        entriesInfo.textContent = `Showing ${startEntry} to ${endEntry} of ${totalItems} entries`;
+
+        // Rows Per Page Selector
+        const selectorContainer = document.createElement('div');
+        const selectorLabel = document.createElement('label');
+        selectorLabel.textContent = 'Entries: ';
+        selectorLabel.style.fontSize = '0.9rem';
+        selectorLabel.style.color = '#495057';
+
+        const selector = document.createElement('select');
+        selector.className = 'rows-per-page-select';
+        [4, 8, 12, 16].forEach(val => {
+            const option = document.createElement('option');
+            option.value = val;
+            option.textContent = val;
+            if (val === rowsPerPage) option.selected = true;
+            selector.appendChild(option);
+        });
+        
+        selector.onchange = (e) => {
+            const data = (type === 'attendance') ? attendance_filteredData : penalty_filteredData;
+            if (type === 'attendance') {
+                attendance_rowsPerPage = parseInt(e.target.value);
+            } else {
+                penalty_rowsPerPage = parseInt(e.target.value);
+            }
+            renderTable(type, data, renderRowFunc, 1); // Go back to page 1
+        };
+
+        selectorContainer.appendChild(selectorLabel);
+        selectorContainer.appendChild(selector);
+        
+        leftSide.appendChild(entriesInfo);
+        leftSide.appendChild(selectorContainer);
+
+        // --- RIGHT SIDE (Buttons) ---
+        const buttonGroup = document.createElement('div');
+        buttonGroup.className = 'pagination-buttons';
+
+        if (totalPages > 1) {
+            // Previous Button
+            const prevBtn = document.createElement('button');
+            prevBtn.textContent = 'Previous';
+            prevBtn.className = 'pagination-btn';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                const data = (type === 'attendance') ? attendance_filteredData : penalty_filteredData;
+                renderTable(type, data, renderRowFunc, currentPage - 1);
+            };
+
+            // Page Number Button
+            const pageNumBtn = document.createElement('button');
+            pageNumBtn.textContent = currentPage;
+            pageNumBtn.className = 'pagination-btn page-number';
+            pageNumBtn.disabled = true;
+
+            // Next Button
+            const nextBtn = document.createElement('button');
+            nextBtn.textContent = 'Next';
+            nextBtn.className = 'pagination-btn';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                const data = (type === 'attendance') ? attendance_filteredData : penalty_filteredData;
+                renderTable(type, data, renderRowFunc, currentPage + 1);
+            };
+            
+            buttonGroup.appendChild(prevBtn);
+            buttonGroup.appendChild(pageNumBtn);
+            buttonGroup.appendChild(nextBtn);
+        }
+
+        paginationContainer.appendChild(leftSide);
+        paginationContainer.appendChild(buttonGroup);
+    }
+    // --- END: REVISED FUNCTION ---
+
+    function renderAttendanceRow(log) {
+        return `<tr>
+            <td>${log.name}</td><td>${log.date}</td><td>${log.timeIn}</td>
+            <td>${log.timeOut}</td><td>${log.remark}</td><td>${log.rendered.toFixed(2)}</td>
+        </tr>`;
+    }
+
+    function renderPenaltyRow(log) {
+        return `<tr>
+            <td>${log.name}</td><td>${log.hours}</td><td>${log.reason}</td>
+            <td>${log.by}</td><td>${log.type}</td><td>${log.date}</td>
+        </tr>`;
+    }
+
+
+    // ========== 6. UTILITY & MISC FUNCTIONS ==========
+
+    function showStatusMessage(message, type = 'info') {
+        const statusDiv = document.getElementById('statusMessage');
+        statusDiv.textContent = message;
+        statusDiv.className = `status-message ${type}`;
+        statusDiv.style.display = 'block';
+    }
+    
+    function showAnnouncement(message, type = 'info') {
+        const banner = document.getElementById('announcementBanner');
+        banner.textContent = message;
+        banner.className = `announcement-banner ${type}`;
+        banner.style.display = 'block';
+    }
+
+    function hideAnnouncement() { document.getElementById('announcementBanner').style.display = 'none'; }
+    function disableAllButtons(reason) {
+        const btn = document.getElementById('btnToggle');
+        btn.disabled = true;
+        btn.textContent = reason;
+    }
+
+    function toggleDropdown() { document.getElementById('userDropdown').classList.toggle('show'); }
+    function logout() {
+        attendanceState.clear();
+        alert("Logged out!");
+    }
+
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.user-profile')) {
+            document.getElementById('userDropdown').classList.remove('show');
+        }
+    });
+
+    </script>
+  </body>
+</html>

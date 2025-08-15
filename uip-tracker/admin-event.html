@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Management</title>
+  <link rel="stylesheet" href="admin-event.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+<body>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo.png" alt="logo" />
+        <span class="logo-text">UIP <br>Tracker</span>
+      </div>
+
+     <ul class="sidebar-links">
+        <li><a href="admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a></li>
+        <li><a href="admin-attendance.html" class="active"><span class="material-symbols-outlined">calendar_month</span>Attendance<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-onlineuser.html"><span class="material-symbols-outlined">account_circle</span>Online Users<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-event.html"><span class="material-symbols-outlined">notifications_active</span>Event<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-help.html"><span class="material-symbols-outlined">help</span>Help<span class="chevron">&gt;</span></a></li>
+        <li><a href="admin-developers.html"><span class="material-symbols-outlined">deployed_code</span>Developers<span class="chevron">&gt;</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+         <!-- Header -->
+       <div class="header">
+        <h1>Event Management</h1>
+        <button class="user-profile" id="profileBtn">
+          <div class="user-avatar">AD</div>
+          <div class="user-details">
+            <h3>Administrator User</h3>
+            <p>Administrator</p>
+          </div>
+          <span class="material-symbols-outlined" style="color: #9197B3;">expand_more</span>
+          <div class="dropdown-menu" id="userDropdown">
+            <a href="#" class="dropdown-item"><span class="material-symbols-outlined">person</span>Profile</a>
+            <a href="#" class="dropdown-item"><span class="material-symbols-outlined">settings</span>Change Password</a>
+            <div class="dropdown-divider"></div>
+            <a href="signin.html" id="logoutBtn" class="dropdown-item"><span class="material-symbols-outlined">logout</span>Sign out</a>
+          </div>
+        </button>
+      </div>
+        </header>
+
+        <!-- Success/Error message display area -->
+        <div id="messageArea"></div>
+
+         <!-- Main admin panel layout with form and events list -->
+        <div class="admin-panel">
+            <!-- Event creation/editing form -->
+            <div class="event-form-card">
+                <h2 id="formTitle"><i class="fas fa-plus-circle"></i>    Add New Event</h2>
+                <form id="eventForm">
+                    <!-- Hidden field for event ID when editing -->
+                    <input type="hidden" id="eventId">
+
+                     <!-- Event title input -->
+                    <div class="form-group">
+                        <label for="eventTitle">Event Title</label>
+                        <input type="text" id="eventTitle" required>
+                    </div>
+
+                    <!-- Event date input -->
+                    <div class="form-group">
+                        <label for="eventDate">Event Date</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+
+                    <!-- Event description input -->
+                    <div class="form-group">
+                        <label for="eventDescription">Description</label>
+                        <textarea id="eventDescription" required></textarea>
+                    </div>
+
+                    <!-- Posted by input -->
+                     <div class="form-group">
+                        <label for="postedBy">Posted By</label>
+                        <input type="text" id="postedBy" value="UIP Staff" required>
+                    </div>
+
+                    <!-- Event image file input -->
+                    <div class="form-group">
+                        <label for="eventImage">Event Image</label>
+                        <input type="file" id="eventImage" accept="image/*">
+                        <div id="currentImage" style="margin-top: 10px;"></div>
+                    </div>
+
+                    <!-- Status input -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>  Save Event</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()"><i class="fas fa-trash"></i>  Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="events-list-card">
+                <h2>Existing Events</h2>
+                <div id="eventsList"></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete this event? This action cannot be undone.</p>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-danger" id="confirmDelete">Delete</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+
+    // =======================================================
+    // --- DROPDOWN & UI LOGIC (FIXED) ---
+    // =======================================================
+    const profileBtn = document.getElementById('profileBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (profileBtn && userDropdown) {
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the document click from firing immediately
+            userDropdown.classList.toggle('show');
+        });
+    }
+
+    // A single listener to close the dropdown when clicking anywhere else
+    document.addEventListener('click', () => {
+        if (userDropdown) userDropdown.classList.remove('show');
+    });
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        });
+    }
+
+    // Sidebar link logic (without preventing navigation)
+    document.querySelectorAll('.sidebar-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            document.querySelectorAll('.sidebar-links a').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
+
+ // =======================================================
+    // --- EVENT/ANNOUNCEMENT LOGIC ---
+    // =======================================================
+    const eventForm = document.getElementById('eventForm');
+    const eventsList = document.getElementById('eventsList');
+    
+    // --- Display Events in the List ---
+    const renderEvents = (events) => {
+        if (!eventsList) return;
+        eventsList.innerHTML = '';
+        if (events.length === 0) {
+            eventsList.innerHTML = '<p>No events found.</p>';
+            return;
+        }
+        events.forEach(event => {
+            const item = document.createElement('div');
+            item.className = 'event-item';
+            item.innerHTML = `
+                <h3>${event.title}</h3>
+                <div class="event-date">${event.posted_by || 'UIP Staff'} | Event Date: ${event.event_date_formatted || 'N/A'}</div>
+                <div class="event-description">${event.content.replace(/\n/g, '<br>')}</div>
+                <div class="event-actions">
+                    <button class="btn btn-edit" onclick='editEvent(${JSON.stringify(event)})'>Edit</button>
+                    <button class="btn btn-danger" onclick="deleteEvent(${event.id})">Delete</button>
+                </div>
+            `;
+            eventsList.appendChild(item);
+        });
+    };
+
+    // --- Fetch Events from Database ---
+    const fetchEvents = async () => {
+        try {
+            const response = await fetch('api_get_announcements.php');
+            if (!response.ok) throw new Error('Failed to fetch events.');
+            const events = await response.json();
+            renderEvents(events);
+        } catch (error) {
+            console.error("Error fetching events:", error);
+        }
+    };
+    
+    // --- Handle Form Submission (Add/Update) ---
+    if (eventForm) {
+    eventForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('eventId').value;
+            const eventData = {
+                id: id ? parseInt(id) : null,
+                title: document.getElementById('eventTitle').value,
+                content: document.getElementById('eventDescription').value,
+                posted_by: document.getElementById('postedBy').value,
+                event_date: document.getElementById('eventDate').value,
+                status: 'Ongoing'
+            };
+        
+      const apiEndpoint = id ? 'api_update_announcement.php' : 'api_add_announcement.php';
+            await fetch(apiEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventData)
+            });
+            fetchEvents();
+            resetForm();
+        });
+    }
+
+    // --- Global Functions for Buttons ---
+    window.editEvent = (event) => {
+        document.getElementById('eventId').value = event.id;
+        document.getElementById('eventTitle').value = event.title;
+        document.getElementById('eventDescription').value = event.content;
+        document.getElementById('eventDate').value = event.event_date;
+        document.getElementById('postedBy').value = event.posted_by;
+        document.getElementById('formTitle').textContent = 'Edit Event';
+        eventForm.querySelector('button[type="submit"]').textContent = 'Update Event';
+    };
+
+  window.deleteEvent = async (id) => {
+        if (confirm('Are you sure you want to delete this event?')) {
+            await fetch('api_delete_announcement.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            });
+            fetchEvents();// Refresh the event list
+        }
+    };
+    
+   window.resetForm = () => {
+        eventForm.reset();
+        document.getElementById('eventId').value = '';
+        document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Event';
+        eventForm.querySelector('button[type="submit"]').innerHTML = '<i class="fas fa-save"></i> Save Event';
+    };
+
+    // --- Initial Load ---
+    fetchEvents();
+    
+    });
+
+</script>
+</body>
+</html>
